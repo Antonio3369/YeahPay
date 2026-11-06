@@ -1,0 +1,61 @@
+{
+  "as_of": "2026-08-08",
+  "merchants": [
+    {
+      "id": "1001",
+      "name": "示例便利店",
+      "short_name": "便利店",
+      "agent_id": "A1",
+      "agent_name": "港島代理",
+      "sales_name": "陳銷售",
+      "status": "正常"
+    },
+    {
+      "id": "1002",
+      "name": "示例餐廳",
+      "short_name": "餐廳",
+      "agent_id": "A1",
+      "agent_name": "港島代理",
+      "sales_name": "陳銷售",
+      "status": "正常"
+    }
+  ],
+  "transactions": [
+    {
+      "merchant_id": "1001",
+      "created_at": "2026-07-15",
+      "amount": 1200,
+      "trans_status": "交易成功",
+      "pay_wallet": "AlipayHK",
+      "card_brand": "",
+      "country": "HK"
+    },
+    {
+      "merchant_id": "1001",
+      "created_at": "2026-08-02",
+      "amount": 1800,
+      "trans_status": "交易成功",
+      "pay_wallet": "AlipayHK",
+      "card_brand": "Mastercard",
+      "country": "HK"
+    },
+    {
+      "merchant_id": "1002",
+      "created_at": "2026-08-03",
+      "amount": 500,
+      "trans_status": "交易失败",
+      "pay_wallet": "WeChatPay",
+      "card_brand": "",
+      "country": "US"
+    },
+    {
+      "merchant_id": "1002",
+      "created_at": "2026-08-08",
+      "amount": 2600,
+      "trans_status": "交易成功",
+      "pay_wallet": "WeChatPay",
+      "card_brand": "",
+      "country": "HK"
+    }
+  ]
+}

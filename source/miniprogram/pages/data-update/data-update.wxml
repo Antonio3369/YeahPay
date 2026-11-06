@@ -1,10 +1,9 @@
-<!-- 數據更新確認頁：先完成 UI，後續接入後端驗證與發布接口 -->
 <view class="page-container update-page">
   <view class="update-hero">
     <view class="hero-mark">↻</view>
     <view class="hero-copy">
-      <text class="hero-title">數據更新確認</text>
-      <text class="hero-subtitle">只有管理密碼持有人可以發布新數據</text>
+      <text class="hero-title">上傳數據文件</text>
+      <text class="hero-subtitle">不連接後端，管理員在本機選擇 JSON / CSV</text>
     </view>
   </view>
 
@@ -13,7 +12,7 @@
       <text>管理員驗證</text>
       <text>SECURE</text>
     </view>
-    <text class="lock-hint">任何人都可以進入本頁，但需要輸入管理密碼才能查看同步狀態及確認更新。</text>
+    <text class="lock-hint">任何人都可以進入本頁，但需要再次輸入當前管理員密碼才能上傳並發布本地數據。</text>
     <input
       class="password-input"
       password
@@ -23,69 +22,66 @@
       bindinput="onPasswordInput"
       bindconfirm="verifyPassword"
     />
-    <button class="btn btn-primary verify-btn" loading="{{verifying}}" disabled="{{verifying || !password}}" bindtap="verifyPassword">驗證並查看狀態</button>
-    <text class="integration-note">使用當前管理員賬號驗證，密碼不會保存在小程序端。</text>
+    <button class="btn btn-primary verify-btn" loading="{{verifying}}" disabled="{{verifying || !password}}" bindtap="verifyPassword">驗證並繼續</button>
+    <text class="integration-note">密碼只用於本機核對角色，不會發到服務器。</text>
   </view>
 
   <block wx:if="{{accessGranted}}">
     <view class="card source-card">
       <view class="section-title">
-        <text>數據同步狀態</text>
-        <text>{{status.checkedAt || '待檢查'}}</text>
+        <text>選擇文件</text>
+        <text>{{status.checkedAt || '待上傳'}}</text>
       </view>
 
-      <view class="source-row">
+      <view class="source-row" bindtap="pickTransactions">
         <view class="source-icon detail-icon">D</view>
         <view class="source-copy">
-          <text class="source-title">交易明細</text>
-          <text class="source-meta">已檢查更新至</text>
+          <text class="source-title">交易明細 JSON / CSV</text>
+          <text class="source-meta">{{detailFile || '點此從微信聊天記錄選擇'}}</text>
         </view>
-        <text class="source-date">{{status.detailDate || '待檢查'}}</text>
+        <text class="source-date">{{status.detailDate || '待上傳'}}</text>
       </view>
 
-      <view class="source-row">
-        <view class="source-icon summary-icon">30</view>
+      <view class="source-row" bindtap="pickMerchants">
+        <view class="source-icon summary-icon">M</view>
         <view class="source-copy">
-          <text class="source-title">近30天匯總 Excel</text>
-          <text class="source-meta">已檢查更新至</text>
+          <text class="source-title">商戶主數據（可選）</text>
+          <text class="source-meta">{{merchantFile || '無則按交易推斷商戶'}}</text>
         </view>
-        <text class="source-date">{{status.summaryDate || '待檢查'}}</text>
+        <text class="source-date">{{status.summaryDate || '可選'}}</text>
       </view>
 
       <view class="consistency-row">
-        <text class="consistency-label">本地 / 雲端 DuckDB</text>
-        <text class="consistency-badge {{status.consistent ? 'is-ok' : 'is-pending'}}">{{status.consistencyText || '待檢查'}}</text>
+        <text class="consistency-label">本機數據包</text>
+        <text class="consistency-badge {{status.consistent ? 'is-ok' : 'is-pending'}}">{{status.consistencyText || '待上傳'}}</text>
       </view>
     </view>
 
     <view wx:if="{{status.candidateExists}}" class="card impact-card">
       <view class="section-title">
-        <text>本次主數據變更</text>
-        <text class="validation-state {{status.validationOk && !status.entityChanges.blocked ? 'is-valid' : 'is-blocked'}}">
-          {{status.validationOk && !status.entityChanges.blocked ? '檢查通過' : '禁止發布'}}
+        <text>讀取結果</text>
+        <text class="validation-state {{status.validationOk ? 'is-valid' : 'is-blocked'}}">
+          {{status.validationOk ? '可確認寫入' : '待上傳交易'}}
         </text>
       </view>
       <view class="impact-grid">
-        <view class="impact-item"><text>商戶</text><text>+{{status.entityChanges.merchant_added || 0}} / -{{status.entityChanges.merchant_removed || 0}}</text></view>
-        <view class="impact-item"><text>代理商</text><text>+{{status.entityChanges.agent_added || 0}} / -{{status.entityChanges.agent_removed || 0}}</text></view>
-        <view class="impact-item"><text>銷售</text><text>+{{status.entityChanges.sales_added || 0}} / -{{status.entityChanges.sales_removed || 0}}</text></view>
-        <view class="impact-item"><text>失效賬號綁定</text><text>{{status.entityChanges.stale_binding_count || 0}}</text></view>
+        <view class="impact-item"><text>商戶</text><text>{{status.entityChanges.merchant_added || 0}}</text></view>
+        <view class="impact-item"><text>交易筆數</text><text>{{preview.txnCount || 0}}</text></view>
+        <view class="impact-item"><text>最早日期</text><text>{{preview.minDate || '-'}}</text></view>
+        <view class="impact-item"><text>最晚日期</text><text>{{preview.maxDate || '-'}}</text></view>
       </view>
-      <text wx:if="{{status.entityChanges.block_reason}}" class="audit-message is-error">{{status.entityChanges.block_reason}}</text>
       <text wx:for="{{status.validationIssues}}" wx:key="*this" class="audit-message is-error">{{item}}</text>
       <text wx:for="{{status.validationWarnings}}" wx:key="*this" class="audit-message is-warning">{{item}}</text>
-      <text wx:if="{{status.entityChanges.stale_binding_count > 0}}" class="audit-message is-warning">部分賬號綁定的代理商或銷售已不存在，發布後該賬號將不會看到舊範圍，請到賬號管理重新分配。</text>
     </view>
 
     <view class="card publish-card">
       <view class="section-title">
-        <text>可發布日期</text>
-        <text>RELEASE</text>
+        <text>業務截止日期</text>
+        <text>LOCAL</text>
       </view>
-      <text class="publish-date">{{status.publishDate || '待計算'}}</text>
-      <text class="publish-hint">以兩個數據源都已具備的最早日期為準。確認後，小程序所有用戶才會看到這個日期的數據。</text>
-      <button class="btn btn-primary publish-btn" disabled="{{!status.canPublish}}" bindtap="confirmPublish">確認更新小程序數據</button>
-      <button class="btn btn-outline refresh-btn" loading="{{loading}}" bindtap="loadStatus">重新檢查</button>
+      <text class="publish-date">{{status.publishDate || '待確認'}}</text>
+      <text class="publish-hint">以文件中的 as_of 或最晚交易日為準。確認後只寫入本機，工作臺立即按此日期出數。請先把 json/csv 發到微信再選擇。</text>
+      <button class="btn btn-primary publish-btn" loading="{{importing}}" disabled="{{!status.canPublish || importing}}" bindtap="confirmPublish">確認寫入本機數據</button>
     </view>
   </block>
 </view>

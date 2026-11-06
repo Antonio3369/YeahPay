@@ -50,7 +50,7 @@ cp .env.example .env
 curl http://127.0.0.1:8000/health
 ```
 
-然后在微信开发者工具导入 `source/miniprogram`，填写正式小程序 AppID。小程序已确认不请求后端 API（`utils/config.js` 中 `USE_REMOTE_API = false`），无需配置 request 合法域名。
+然后在微信开发者工具导入 `source/miniprogram`，填写正式小程序 AppID。小程序不请求后端 API（`USE_REMOTE_API = false`）：管理员在「上傳數據文件」页从微信聊天记录选择 JSON/CSV，确认后写入本机。示例见 `data/miniprogram-dataset.example.json`。
 
 ## 重要警告
 

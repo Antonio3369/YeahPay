@@ -1,10 +1,10 @@
 /**
- * 小程序本地数据层（不发起网络请求）
- * 登录态写在本地 storage；列表/KPI 返回空结构，保证页面可进、图表不因缺字段崩溃。
+ * 小程序本地数据层：账号在 storage，看板数据来自上传文件（dataset）。
  */
 
 const { LOCAL_DB_KEY, ROLE_MAP } = require('./config');
 const { getRole, getToken } = require('./auth');
+const dataset = require('./dataset');
 
 const DEFAULT_THRESHOLDS = [
   { threshold_key: 'inactive_days', label: '未激活天數', value: 14 },
@@ -123,39 +123,22 @@ function handle(path, options = {}) {
     };
   }
 
-  if (pathname === '/api/v1/auth/me') {
-    return currentUser();
-  }
+  if (pathname === '/api/v1/auth/me') return currentUser();
 
-  if (pathname === '/api/v1/scope/agents') return [];
-  if (pathname === '/api/v1/scope/sales') return [];
+  if (pathname === '/api/v1/scope/agents') return dataset.agents();
+  if (pathname === '/api/v1/scope/sales') return dataset.sales();
 
-  if (pathname === '/api/v1/v2/dashboard/kpi') {
-    return {
-      merchant_count: 0,
-      active_merchant_count: 0,
-      active_rate: 0,
-      this_month_amount: 0,
-      last_month_amount: 0,
-      this_month_avg: 0,
-      last_month_avg: 0,
-      fail_rate: 0,
-      mom_pct: 0,
-      alert_count: 0
-    };
-  }
-  if (pathname === '/api/v1/v2/dashboard/monthly-trend') return [];
-  if (pathname === '/api/v1/v2/dashboard/daily-collection') return [];
-  if (pathname === '/api/v1/v2/dashboard/wallet-distribution') return [];
-  if (pathname === '/api/v1/v2/dashboard/status-distribution') return [];
+  if (pathname === '/api/v1/v2/dashboard/kpi') return dataset.kpi(path);
+  if (pathname === '/api/v1/v2/dashboard/monthly-trend') return dataset.monthlyTrend(path);
+  if (pathname === '/api/v1/v2/dashboard/daily-collection') return dataset.dailyCollection(path);
+  if (pathname === '/api/v1/v2/dashboard/wallet-distribution') return dataset.groupVolume(path, 'pay_wallet', true);
+  if (pathname === '/api/v1/v2/dashboard/status-distribution') return dataset.groupVolume(path, 'trans_status', false);
 
-  if (pathname === '/api/v1/v2/merchants/list') return emptyPage();
-  if (pathname === '/api/v1/v2/silent/list') return emptyPage();
-  if (pathname === '/api/v1/v2/silent/summary') {
-    return { total: 0, sleeping: 0, risky: 0, thresholds: { silent_days: 14, silent_max_days: 180, silent_amount: 300, risky_days: 180, risky_amount: 100, risky_lookback_days: 90 } };
-  }
-  if (pathname === '/api/v1/fails/summary') return [];
-  if (pathname === '/api/v1/fails/detail') return emptyPage();
+  if (pathname === '/api/v1/v2/merchants/list') return dataset.merchantList(path);
+  if (pathname === '/api/v1/v2/silent/list') return dataset.silentList(path);
+  if (pathname === '/api/v1/v2/silent/summary') return dataset.silentSummary(path);
+  if (pathname === '/api/v1/fails/summary') return dataset.failsSummary(path);
+  if (pathname === '/api/v1/fails/detail') return dataset.failsDetail(path);
   if (pathname === '/api/v1/alerts') return emptyPage();
   if (pathname === '/api/v1/pushes' && method === 'GET') return emptyPage();
   if (pathname === '/api/v1/pushes' && method === 'POST') return { id: 0, ok: true };
@@ -164,51 +147,47 @@ function handle(path, options = {}) {
   if (/^\/api\/v1\/(alerts|pushes)\/\d+\/(followup|resolve|start)$/.test(pathname)) return { ok: true };
   if (pathname === '/api/v1/reviews') return emptyPage();
   if (/^\/api\/v1\/reviews\/[^/]+\/[^/]+$/.test(pathname)) {
-    return { source: { id: '', name: '本地模式' }, records: [], touch_count: 0 };
+    return { source: { id: '', name: '本地文件' }, records: [], touch_count: 0 };
   }
   if (/^\/api\/v1\/reviews\/[^/]+\/[^/]+\/effect$/.test(pathname)) {
-    return { available: false, data_ready: false, reason: '小程序未接入 API' };
+    return { available: false, data_ready: false, reason: '預警復盤仍為本地空數據' };
   }
 
-  if (pathname === '/api/v1/v2/team/rank') return [];
-  if (pathname === '/api/v1/v2/sales-performance/rank') return [];
-  if (pathname === '/api/v1/v2/sales-performance/trend') return [];
-  if (pathname === '/api/v1/v2/sales-performance/existing-trend') return [];
-  if (pathname === '/api/v1/v2/sales-performance/history') return [];
-  if (pathname === '/api/v1/v2/sales-performance/summary') return { merchants: 0, volume: 0 };
-  if (pathname === '/api/v1/v2/overseas/top10') return emptyPage();
-  if (pathname === '/api/v1/v2/mastercard/rank') return emptyPage();
+  if (pathname === '/api/v1/v2/team/rank') return dataset.teamRank(path);
+  if (pathname === '/api/v1/v2/sales-performance/rank') return dataset.salesPerformanceRank(path);
+  if (pathname === '/api/v1/v2/sales-performance/trend') return dataset.salesPerformanceTrend(path);
+  if (pathname === '/api/v1/v2/sales-performance/existing-trend') return dataset.salesPerformanceTrend(path);
+  if (pathname === '/api/v1/v2/sales-performance/history') return dataset.salesPerformanceHistory();
+  if (pathname === '/api/v1/v2/sales-performance/summary') return dataset.salesPerformanceSummary(path);
+  if (pathname === '/api/v1/v2/overseas/top10') return dataset.overseasTop(path);
+  if (pathname === '/api/v1/v2/mastercard/rank') return dataset.mastercardRank(path);
 
   if (/^\/api\/v1\/v2\/entity\/merchant\/[^/]+\/info$/.test(pathname)) {
-    const id = decodeURIComponent(pathname.split('/')[6] || '');
-    return { id, name: '本地模式（無遠端數據）', short_name: id || '本地' };
+    return dataset.merchantInfo(decodeURIComponent(pathname.split('/')[6] || ''));
   }
   if (/^\/api\/v1\/v2\/entity\/merchant\/[^/]+\/breakdown$/.test(pathname)) {
-    return { wallet: [], status: [] };
+    return dataset.merchantBreakdown(decodeURIComponent(pathname.split('/')[6] || ''));
   }
   if (/^\/api\/v1\/merchants\/[^/]+$/.test(pathname)) {
-    return { daily_stats: [], mtd: {} };
+    return dataset.merchantDaily(decodeURIComponent(pathname.split('/').pop()));
   }
-  if (/^\/api\/v1\/v2\/entity\/agent\/[^/]+$/.test(pathname) && !pathname.endsWith('/breakdown') && !pathname.endsWith('/trend')) {
-    const id = decodeURIComponent(pathname.split('/').pop());
-    return { agent_id: id, agent_name: id, this_month_volume: 0 };
+  if (/^\/api\/v1\/v2\/entity\/agent\/[^/]+$/.test(pathname)) {
+    return dataset.agentInfo(decodeURIComponent(pathname.split('/').pop()));
   }
-  if (/\/breakdown$/.test(pathname) && pathname.indexOf('/entity/') !== -1) {
+  if (/\/breakdown$/.test(pathname) && pathname.indexOf('/entity/agent/') !== -1) {
     return { wallet: [], status: [] };
   }
   if (/\/trend$/.test(pathname) && pathname.indexOf('/entity/agent/') !== -1) return [];
   if (/^\/api\/v1\/v2\/entity\/sales\/[^/]+$/.test(pathname)) {
-    const name = decodeURIComponent(pathname.split('/').pop());
-    return {
-      sales_name: name,
-      this_month_vol: 0,
-      merchant_count: 0,
-      previous_merchant_count: 0,
-      active_count: 0,
-      previous_active_count: 0
-    };
+    return dataset.salesInfo(decodeURIComponent(pathname.split('/').pop()));
   }
-  if (/\/merchants$/.test(pathname) && pathname.indexOf('/entity/sales/') !== -1) return emptyPage();
+  if (/\/breakdown$/.test(pathname) && pathname.indexOf('/entity/sales/') !== -1) {
+    return { wallet: [], status: [] };
+  }
+  if (/\/merchants$/.test(pathname) && pathname.indexOf('/entity/sales/') !== -1) {
+    const name = decodeURIComponent(pathname.split('/')[6] || '');
+    return dataset.salesMerchants(name, path);
+  }
 
   if (pathname === '/api/v1/admin/users' && method === 'GET') return readDb().users;
   if (pathname === '/api/v1/admin/users' && method === 'POST') {
@@ -257,19 +236,33 @@ function handle(path, options = {}) {
     return { scanned: 0, matched: 0, inserted: 0, stale_closed: 0 };
   }
   if (pathname === '/api/v1/v2/admin/data-refresh-status') {
+    const meta = dataset.publishedMeta() || {};
+    const has = !!(meta.txnCount || meta.merchantCount);
     return {
       can_publish: false,
-      candidate_exists: false,
-      publish_date: '',
-      a_table: { latest_date: '' },
-      b_table: { latest_date: '' },
-      local_cloud_consistency: { text: '小程序未接入 API', consistent: false, checked_at: '' },
-      candidate_validation: { ok: false, issues: ['小程序不請求後端'], warnings: [] },
-      entity_changes: {}
+      candidate_exists: has,
+      publish_date: meta.asOf || '',
+      a_table: { latest_date: meta.asOf || '' },
+      b_table: { latest_date: meta.maxDate || meta.asOf || '' },
+      local_cloud_consistency: {
+        text: has ? '已從本地文件載入' : '尚未上傳數據文件',
+        consistent: has,
+        checked_at: meta.importedAt || ''
+      },
+      candidate_validation: { ok: has, issues: has ? [] : ['請上傳 JSON 或 CSV'], warnings: [] },
+      entity_changes: {
+        merchant_added: meta.merchantCount || 0,
+        merchant_removed: 0,
+        agent_added: 0,
+        agent_removed: 0,
+        sales_added: 0,
+        sales_removed: 0,
+        stale_binding_count: 0
+      }
     };
   }
   if (pathname === '/api/v1/v2/admin/confirm-data-refresh') {
-    throw new Error('小程序未接入 API，無法確認數據發布');
+    throw new Error('請在本頁直接上傳並確認文件，不再走後端發布');
   }
 
   console.warn('[local-api] unhandled', method, pathname);
