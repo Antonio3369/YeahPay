@@ -1,0 +1,26 @@
+.silent-stats{display:flex;gap:16rpx;margin-bottom:28rpx}
+.silent-stat{position:relative;flex:1;background:var(--card);border-radius:var(--r);padding:22rpx 12rpx 20rpx;text-align:center;border:2rpx solid var(--line);overflow:hidden}
+.silent-stat-sleep{border-color:rgba(197,146,69,.24)}
+.silent-stat-risk{border-color:rgba(223,111,122,.24)}
+.ss-num{display:block;font-size:40rpx;font-weight:700;font-variant-numeric:tabular-nums}
+.ss-label{display:block;font-size:20rpx;color:var(--t3);margin-top:8rpx}
+.ss-definition{display:block;min-height:34rpx;margin-top:10rpx;color:var(--t3);font-size:16rpx;line-height:1.35}
+.ss-info{position:absolute;right:10rpx;top:10rpx;width:26rpx;height:26rpx;border:1rpx solid var(--t3);border-radius:50%;color:var(--t3);font-size:17rpx;line-height:24rpx}
+.silent-search-bar{display:flex;align-items:center;gap:16rpx;margin-bottom:18rpx}
+.silent-search-input{flex:1;height:68rpx;padding:0 22rpx;background:var(--card);border:2rpx solid var(--line);border-radius:var(--rs);color:var(--text);font-size:23rpx}
+.silent-search-input:focus{border-color:var(--ac)}
+.silent-search-total{color:var(--t3);font-size:20rpx;white-space:nowrap}
+
+.silent-list-caption{font-size:22rpx;color:var(--t3);margin:8rpx 4rpx 14rpx}
+.silent-table{margin-bottom:0}
+.silent-row{min-height:88rpx;align-items:center}
+.silent-name{flex:1;min-width:0;width:auto}
+.silent-days{width:100rpx;flex-shrink:0}
+.silent-type{width:154rpx;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4rpx}
+.silent-amount{width:112rpx;flex-shrink:0;color:var(--ac);font-weight:600}
+.silent-merchant-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);font-size:23rpx}
+.silent-merchant-id{display:block;margin-top:4rpx;color:var(--t3);font-size:17rpx}
+.silent-type-label{font-size:22rpx;font-weight:600}
+.silent-status{font-size:17rpx;color:var(--t3);white-space:nowrap}
+.silent-sleep .silent-type-label{color:var(--wn)}
+.silent-risk .silent-type-label{color:var(--dg)}

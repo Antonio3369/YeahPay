@@ -1,0 +1,70 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/dashboard/dashboard",
+    "pages/merchants/merchants",
+    "pages/merchant-detail/merchant-detail",
+    "pages/agent-detail/agent-detail",
+    "pages/alerts/alerts",
+    "pages/team/team",
+    "pages/sales-detail/sales-detail",
+    "pages/sales-performance/sales-performance",
+    "pages/me/me",
+    "pages/fails/fails",
+    "pages/silent/silent",
+    "pages/overseas/overseas",
+    "pages/mastercard/mastercard",
+    "pages/data-update/data-update",
+    "pages/account-management/account-management",
+    "pages/thresholds/thresholds",
+    "pages/reviews/reviews",
+    "pages/review-detail/review-detail"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#F7F8FC",
+    "navigationBarTitleText": "YeahPay",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F7F8FC"
+  },
+  "tabBar": {
+    "color": "#A1ABBB",
+    "selectedColor": "#6677DF",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/dashboard/dashboard",
+        "text": "工作臺",
+        "iconPath": "icons/tab-dashboard.png",
+        "selectedIconPath": "icons/tab-dashboard-active.png"
+      },
+      {
+        "pagePath": "pages/merchants/merchants",
+        "text": "商戶",
+        "iconPath": "icons/tab-merchants.png",
+        "selectedIconPath": "icons/tab-merchants-active.png"
+      },
+      {
+        "pagePath": "pages/alerts/alerts",
+        "text": "預警",
+        "iconPath": "icons/tab-alerts.png",
+        "selectedIconPath": "icons/tab-alerts-active.png"
+      },
+      {
+        "pagePath": "pages/team/team",
+        "text": "飛虎隊",
+        "iconPath": "icons/tab-team.png",
+        "selectedIconPath": "icons/tab-team-active.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "icons/tab-me.png",
+        "selectedIconPath": "icons/tab-me-active.png"
+      }
+    ]
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
+}

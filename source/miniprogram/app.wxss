@@ -1,0 +1,262 @@
+/**
+ * 全局样式变量
+ * 配色方案：Taskflow-inspired light mobile system
+ * 字体：系统默认（小程序不支持 Google Fonts）
+ */
+page {
+  --bg: #F7F8FC;
+  --card: #FFFFFF;
+  --card2: #F0F2F8;
+  --line: #E7EAF1;
+  --text: #202A3B;
+  --t2: #738099;
+  --t3: #A1ABBB;
+  --ac: #6677DF;
+  --lav: #EEF0FF;
+  --sc: #48B58E;
+  --wn: #C59245;
+  --dg: #DF6F7A;
+  --r: 22rpx;
+  --rs: 14rpx;
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 公共卡片样式 */
+.card {
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  border: 2rpx solid var(--line);
+  box-shadow: 0 6rpx 18rpx rgba(61, 76, 111, 0.05);
+}
+
+/* 页面级容器 */
+.page-container {
+  padding: 24rpx;
+  padding-bottom: 40rpx;
+  min-height: 100vh;
+}
+
+/* 区块标题 */
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 2rpx solid var(--line);
+}
+
+.section-title text:first-child {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.section-title text:last-child {
+  font-size: 18rpx;
+  color: var(--t3);
+  letter-spacing: 2rpx;
+}
+
+/* 空数据占位 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+  color: var(--t3);
+  font-size: 24rpx;
+}
+
+/* 加载中 */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+  color: var(--t3);
+  font-size: 24rpx;
+}
+
+/* 分页列表底部状态：所有长列表统一使用滚动到底自动加载 */
+.list-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28rpx 0 40rpx;
+  color: var(--t2);
+  font-size: 22rpx;
+}
+
+.list-footer-muted {
+  color: var(--t3);
+}
+
+.entity-link {
+  color: var(--ac) !important;
+}
+
+.rank-search {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.rank-search-input {
+  flex: 1;
+  height: 68rpx;
+  padding: 0 22rpx;
+  background: var(--card);
+  border: 2rpx solid var(--line);
+  border-radius: var(--rs);
+  color: var(--text);
+  font-size: 23rpx;
+}
+
+.rank-search-input:focus {
+  border-color: var(--ac);
+}
+
+.rank-search-total {
+  color: var(--t3);
+  font-size: 20rpx;
+  white-space: nowrap;
+}
+
+/* 公共数据表格：失败、沉默、卡组织排行等页面共用 */
+.simple-table {
+  background: var(--card);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 28rpx;
+}
+
+.st-row {
+  display: flex;
+  align-items: center;
+  min-height: 76rpx;
+  padding: 0 12rpx;
+  border-bottom: 2rpx solid var(--line);
+}
+
+.st-row:last-child {
+  border-bottom: none;
+}
+
+.st-header {
+  background: var(--card2);
+}
+
+.st-header text {
+  font-size: 18rpx;
+  color: var(--t3);
+  text-transform: uppercase;
+  letter-spacing: 2rpx;
+}
+
+.st-cell {
+  width: 120rpx;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--t2);
+  font-variant-numeric: tabular-nums;
+}
+
+.st-cell-wide {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+  font-size: 22rpx;
+}
+
+/* 通用按钮 */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx 32rpx;
+  border-radius: var(--rs);
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: var(--ac);
+  color: #FFFFFF;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2rpx solid var(--ac);
+  color: var(--ac);
+}
+
+.btn-danger {
+  background: var(--dg);
+  color: #fff;
+}
+
+/* 标签/Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+  font-weight: 500;
+}
+
+.badge-pen {
+  background: rgba(197, 146, 69, 0.12);
+  color: var(--wn);
+}
+
+.badge-flw {
+  background: rgba(102, 119, 223, 0.12);
+  color: var(--ac);
+}
+
+.badge-res {
+  background: rgba(72, 181, 142, 0.12);
+  color: var(--sc);
+}
+
+.badge-ign {
+  background: #EEF0F5;
+  color: var(--t3);
+}
+
+/* 环比颜色 */
+.mom-up {
+  color: var(--sc);
+}
+
+.mom-down {
+  color: var(--dg);
+}
+
+/* 单号等宽数字 */
+.mono-num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1rpx;
+}
+
+/* 隐藏滚动条 */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

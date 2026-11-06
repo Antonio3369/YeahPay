@@ -1,0 +1,41 @@
+<!--交易失败页-->
+<view class="page-container">
+  <view class="section-title"><text>近30天 Top 10 失敗商戶</text><text>/fails/summary</text></view>
+  <view class="simple-table">
+    <view class="st-row st-header">
+      <text class="st-cell st-cell-wide">商戶</text>
+      <text class="st-cell">筆數</text>
+      <text class="st-cell">金額</text>
+      <text class="st-cell">最後失敗</text>
+    </view>
+    <view class="st-row" wx:for="{{summaryList}}" wx:key="merchant_id">
+      <text class="st-cell st-cell-wide entity-link" bindtap="goMerchantDetail" data-id="{{item.merchant_id}}">{{item.merchant_name}}</text>
+      <text class="st-cell">{{item.fail_count}}</text>
+      <text class="st-cell">{{item.fail_amount_fmt}}</text>
+      <text class="st-cell">{{item.last_fail_time}}</text>
+    </view>
+  </view>
+
+  <view class="section-title" style="margin-top:40rpx"><text>失敗明細</text><text>/fails/detail</text></view>
+  <view class="simple-table">
+    <view class="st-row st-header">
+      <text class="st-cell st-cell-wide">商戶</text>
+      <text class="st-cell">金額</text>
+      <text class="st-cell">渠道</text>
+      <text class="st-cell">錢包</text>
+      <text class="st-cell">錯誤</text>
+    </view>
+    <view class="st-row" wx:for="{{detailList}}" wx:key="order_no">
+      <text class="st-cell st-cell-wide entity-link" bindtap="goMerchantDetail" data-id="{{item.merchant_id}}">{{item.merchant_short_name}}</text>
+      <text class="st-cell">{{item.amount_fmt}}</text>
+      <text class="st-cell">{{item.trans_channel}}</text>
+      <text class="st-cell">{{item.pay_wallet}}</text>
+      <text class="st-cell error-code">{{item.error_code}}</text>
+    </view>
+  </view>
+
+  <view class="list-footer" wx:if="{{loadingMore}}">正在載入更多...</view>
+  <view class="list-footer list-footer-muted" wx:if="{{detailList.length > 0 && !detailHasMore}}">已加載全部失敗明細</view>
+
+  <view class="empty-state" wx:if="{{summaryList.length === 0}}">暫無數據</view>
+</view>

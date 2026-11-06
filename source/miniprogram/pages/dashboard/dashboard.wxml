@@ -1,0 +1,116 @@
+<!--工作台页面-->
+<view class="page-container">
+
+  <!-- 视角切换（仅 admin 可见） -->
+  <view class="scope-bar" wx:if="{{role === 'admin'}}">
+    <view class="scope-picker" bindtap="openScopePicker">
+      <text class="scope-icon">🔭</text>
+      <view class="scope-current"><text class="scope-eyebrow">當前數據視角</text><text class="scope-label">{{currentScopeLabel}}</text></view>
+      <text class="scope-arrow">▼</text>
+    </view>
+  </view>
+  <view class="scope-fixed" wx:if="{{role !== 'admin' && lockedScopeLabel}}">
+    <text class="scope-fixed-icon">◉</text><text>當前賬號範圍：{{lockedScopeLabel}}</text>
+  </view>
+
+  <view class="scope-mask" wx:if="{{scopePickerOpen}}" catchtap="closeScopePicker">
+    <view class="scope-sheet" catchtap="stopScopeEvent">
+      <view class="scope-sheet-head"><text class="scope-sheet-title">選擇數據視角</text><text class="scope-sheet-close" bindtap="closeScopePicker">×</text></view>
+      <view class="scope-tabs">
+        <view class="scope-tab {{scopeTab === 'all' ? 'active' : ''}}" bindtap="switchScopeTab" data-tab="all">全部機構</view>
+        <view class="scope-tab {{scopeTab === 'agents' ? 'active' : ''}}" bindtap="switchScopeTab" data-tab="agents">代理商 <text>{{agentOptions.length}}</text></view>
+        <view class="scope-tab {{scopeTab === 'sales' ? 'active' : ''}}" bindtap="switchScopeTab" data-tab="sales">銷售 <text>{{salesOptions.length}}</text></view>
+      </view>
+      <input wx:if="{{scopeTab !== 'all'}}" class="scope-search" placeholder="搜尋名稱或ID" placeholder-class="input-placeholder" value="{{scopeSearch}}" bindinput="onScopeSearch" />
+      <scroll-view class="scope-options" scroll-y="true">
+        <view wx:if="{{scopeTab === 'all'}}" class="scope-option {{activeScope === 'all' ? 'selected' : ''}}" bindtap="onScopeSelect" data-scope="all" data-label="全部機構"><view><text class="scope-option-name">全部機構</text><text class="scope-option-desc">查看全機構數據</text></view><text class="scope-check" wx:if="{{activeScope === 'all'}}">✓</text></view>
+        <block wx:if="{{scopeTab === 'agents'}}">
+          <view class="scope-option {{activeScope === item.value ? 'selected' : ''}}" wx:for="{{filteredAgents}}" wx:key="value" bindtap="onScopeSelect" data-scope="{{item.value}}" data-label="{{item.label}}"><view><text class="scope-option-name">{{item.label}}</text><text class="scope-option-desc">{{item.merchant_count || 0}} 家商戶 · ID {{item.agent_id}}</text></view><text class="scope-check" wx:if="{{activeScope === item.value}}">✓</text></view>
+          <view class="scope-no-result" wx:if="{{filteredAgents.length === 0}}">找不到匹配的代理商</view>
+        </block>
+        <block wx:if="{{scopeTab === 'sales'}}">
+          <view class="scope-option {{activeScope === item.value ? 'selected' : ''}}" wx:for="{{filteredSales}}" wx:key="value" bindtap="onScopeSelect" data-scope="{{item.value}}" data-label="{{item.label}}"><view><text class="scope-option-name">{{item.label}}</text><text class="scope-option-desc">{{item.merchant_count || 0}} 家商戶</text></view><text class="scope-check" wx:if="{{activeScope === item.value}}">✓</text></view>
+          <view class="scope-no-result" wx:if="{{filteredSales.length === 0}}">找不到匹配的銷售</view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!--
+    ECharts 使用原生 canvas 绘制，普通 WXML 的 z-index 无法盖住它。
+    选择视角时暂时卸载 dashboard-content，避免 canvas 穿透弹窗；关闭后会重新初始化图表。
+  -->
+  <view wx:if="{{!scopePickerOpen}}" class="dashboard-content">
+
+  <!-- KPI 卡片行 -->
+  <view class="kpi-row">
+    <view class="kpi-card kpi-card-ac">
+      <view class="kpi-num kpi-num-merchant">{{kpi.active_merchant_count}} / {{kpi.merchant_count}}</view>
+      <view class="kpi-label">活躍商戶 / 總商戶數</view>
+      <view class="kpi-sub kpi-active-rate">月活躍率 {{kpi.active_rate}}</view>
+    </view>
+    <view class="kpi-card kpi-card-wn">
+      <view class="kpi-num kpi-num-pair">{{kpi.this_month_amount}} / {{kpi.last_month_amount}}</view>
+      <view class="kpi-label">本月交易 / 上月同期</view>
+      <view class="kpi-sub {{kpi.mom_pct_raw >= 0 ? 'mom-up' : 'mom-down'}}">{{kpi.mom_direction}} {{kpi.mom_pct}}</view>
+    </view>
+  </view>
+
+  <view class="kpi-row">
+    <view class="kpi-card">
+      <view class="kpi-num kpi-num-pair">{{kpi.this_month_avg}} / {{kpi.last_month_avg}}</view>
+      <view class="kpi-label">本月戶均交易 / 上月同期</view>
+    </view>
+    <view class="kpi-card kpi-card-dg">
+      <view class="kpi-num kpi-num-fail">{{kpi.fail_rate}}</view>
+      <view class="kpi-label">交易失敗比例</view>
+    </view>
+  </view>
+
+  <!-- 月度趋势图 -->
+  <view class="chart-section">
+    <view class="section-title">
+      <text>月度趨勢</text>
+      <text>/dashboard/monthly-trend</text>
+    </view>
+    <view class="chart-canvas">
+      <ec-canvas id="chartMonthly" canvas-id="chartMonthly" ec="{{ecMonthly}}" />
+    </view>
+  </view>
+
+  <!-- 每日收缴图 -->
+  <view class="chart-section">
+    <view class="section-title">
+      <text>每日收繳</text>
+      <text>/dashboard/daily-collection</text>
+    </view>
+    <view class="chart-canvas">
+      <ec-canvas id="chartDaily" canvas-id="chartDaily" ec="{{ecDaily}}" />
+    </view>
+  </view>
+
+  <!-- 钱包分布图 -->
+  <view class="chart-section">
+    <view class="section-title">
+      <text>按錢包類型</text>
+      <text>/dashboard/wallet-distribution</text>
+    </view>
+    <view class="chart-canvas">
+      <ec-canvas id="chartWallet" canvas-id="chartWallet" ec="{{ecWallet}}" />
+    </view>
+  </view>
+
+  <!-- 交易状态分布图 -->
+  <view class="chart-section">
+    <view class="section-title">
+      <text>按交易狀態</text>
+      <text>/dashboard/status-distribution</text>
+    </view>
+    <view class="chart-canvas">
+      <ec-canvas id="chartStatus" canvas-id="chartStatus" ec="{{ecStatus}}" />
+    </view>
+  </view>
+
+  </view>
+
+</view>

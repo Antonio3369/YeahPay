@@ -1,0 +1,68 @@
+<!--商戶列表頁-->
+<view class="page-container">
+
+  <!-- 搜尋欄 -->
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="搜尋商戶簡稱或ID"
+      placeholder-class="input-placeholder"
+      value="{{searchText}}"
+      bindinput="onSearch"
+      confirm-type="search"
+    />
+    <text class="search-total">共 {{totalCount}} 家</text>
+  </view>
+
+  <!-- 商戶列表 -->
+  <block wx:if="{{merchants.length > 0}}">
+    <view
+      class="merchant-card"
+      wx:for="{{merchants}}"
+      wx:key="id"
+      bindtap="goDetail"
+      data-id="{{item.id}}"
+    >
+      <!-- 顶部信息 -->
+      <view class="mc-top">
+        <view class="mc-name">{{item.short_name || item.name || '未命名'}}</view>
+        <view class="mc-id">#{{item.id}}</view>
+      </view>
+
+      <!-- 元信息 -->
+      <view class="mc-meta">
+        <text class="mc-agent">{{item.agent_name || '-'}}</text>
+        <text class="mc-divider">·</text>
+        <text class="mc-sales">{{item.sales_person || '-'}}</text>
+      </view>
+
+      <!-- 交易数据 -->
+      <view class="mc-data">
+        <view class="mc-data-item">
+          <text class="mc-data-label">上月</text>
+          <text class="mc-data-value">{{item.last_amount_fmt}}</text>
+        </view>
+        <view class="mc-data-item">
+          <text class="mc-data-label">本月</text>
+          <text class="mc-data-value">{{item.this_amount_fmt}}</text>
+        </view>
+        <view class="mc-data-item">
+          <text class="mc-data-label">環比</text>
+          <text class="mc-data-value {{item.mom_raw >= 0 ? 'mom-up' : 'mom-down'}}">{{item.mom_fmt}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && merchants.length === 0}}">
+    暫無商戶數據
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{loading}}">載入中...</view>
+
+  <view class="list-footer" wx:elif="{{loadingMore}}">正在載入更多...</view>
+  <view class="list-footer list-footer-muted" wx:elif="{{merchants.length > 0 && !hasMore}}">已加載全部商戶</view>
+
+</view>

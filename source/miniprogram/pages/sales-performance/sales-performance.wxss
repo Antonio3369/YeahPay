@@ -1,0 +1,54 @@
+ .access-locked{margin:120rpx 20rpx 0;padding:64rpx 36rpx;background:var(--card);border:2rpx solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;text-align:center}
+.access-locked-icon{width:96rpx;height:96rpx;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(197,146,69,.12);color:var(--wn);font-size:46rpx;margin-bottom:28rpx}
+.access-locked-title{font-size:30rpx;font-weight:600;color:var(--text);margin-bottom:16rpx}
+.access-locked-desc{font-size:23rpx;line-height:1.7;color:var(--t3)}
+
+/* Tab */
+.perf-tabs{display:flex;background:var(--card);border-radius:var(--rs);padding:4rpx;margin-bottom:28rpx;border:2rpx solid var(--line)}
+.perf-tab{flex:1;text-align:center;padding:14rpx 0;font-size:24rpx;color:var(--t3);border-radius:12rpx}
+.perf-tab.active{background:var(--ac);color:#FFFFFF;font-weight:600}
+/* 统计卡 */
+.perf-stats{display:flex;gap:12rpx;margin-bottom:24rpx}
+.perf-stat-card{flex:1;background:var(--card);border-radius:var(--r);padding:24rpx 8rpx;text-align:center}
+.ps-num{font-size:36rpx;font-weight:700;font-variant-numeric:tabular-nums}
+.c-ac .ps-num{color:var(--ac)}.c-wn .ps-num{color:var(--wn)}.c-sc .ps-num{color:var(--sc)}
+.ps-label{font-size:18rpx;color:var(--t3);margin-top:6rpx}
+/* 排名卡片 */
+.perf-rank-row{display:flex;gap:16rpx;margin-bottom:28rpx;overflow-x:auto;padding-bottom:8rpx}
+.perf-rank-row::-webkit-scrollbar{display:none}
+.rank-card{flex-shrink:0;width:280rpx;background:var(--card);border-radius:var(--r);padding:24rpx;position:relative;border:2rpx solid var(--line)}
+.rank-card:active,.perf-card:active{border-color:var(--ac);background:var(--card2)}
+.rank-badge{position:absolute;top:12rpx;right:16rpx;font-size:20rpx;color:var(--ac);font-weight:700}
+.rank-badge.gold{color:var(--wn)}
+.rank-num{font-size:36rpx;font-weight:600;color:var(--text);margin:8rpx 0}
+.rank-sub{font-size:16rpx;color:var(--t3);text-transform:uppercase;letter-spacing:2rpx}
+.rank-vol{font-size:20rpx;color:var(--t2);margin-top:8rpx;display:block}
+.rank-name{font-size:22rpx;color:var(--t2);margin-top:12rpx;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* 近月走势 */
+.perf-chart{height:420rpx;background:var(--card);border-radius:var(--r);padding:18rpx 12rpx 12rpx;margin-bottom:28rpx}
+.perf-chart ec-canvas{display:block;width:100%;height:100%}
+/* 销售画像 */
+.perf-grid{display:grid;grid-template-columns:1fr 1fr;gap:16rpx;margin-bottom:28rpx}
+.perf-card{background:var(--card);border-radius:var(--r);padding:24rpx;border:2rpx solid var(--line);box-sizing:border-box;min-height:214rpx}
+.pc-hd{display:flex;align-items:center;gap:16rpx;margin-bottom:22rpx}
+.pc-avt{width:64rpx;height:64rpx;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:28rpx;color:var(--ac);border:2rpx solid var(--line)}
+.pc-name{font-size:24rpx;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-metrics{display:grid;grid-template-columns:1fr 1fr;column-gap:12rpx;align-items:end}
+.pc-metric{min-width:0}
+.pc-label{display:block;font-size:18rpx;line-height:1.35;color:var(--t3);white-space:nowrap}
+.pc-val{display:block;font-size:26rpx;line-height:1.2;color:var(--text);font-weight:600;margin-top:6rpx;white-space:nowrap}
+.pc-new{color:var(--ac)}
+.pc-mom-row{display:flex;align-items:baseline;gap:8rpx;margin-top:20rpx;padding-top:14rpx;border-top:2rpx solid var(--line)}
+.pc-mom-label{font-size:18rpx;line-height:1.35;color:var(--t3)}
+.pc-mom{font-size:20rpx;line-height:1.35;font-weight:600}
+/* 历史表格 */
+.history-tabs{display:flex;margin-bottom:20rpx;border-bottom:2rpx solid var(--line)}
+.h-tab{padding:12rpx 20rpx;font-size:22rpx;color:var(--t3)}
+.h-tab.active{color:var(--text);font-weight:500;border-bottom:4rpx solid var(--ac);margin-bottom:-2rpx}
+.history-scroll{width:100%}
+.history-table{min-width:800rpx}
+.h-row{display:flex;border-bottom:2rpx solid var(--line)}
+.h-header{background:var(--card2)}
+.h-cell{width:120rpx;text-align:center;padding:16rpx 8rpx;font-size:20rpx;color:var(--t3)}
+.h-cell-name{width:180rpx;text-align:left;font-size:22rpx;color:var(--text);font-weight:500}
+.h-cell-val{color:var(--t2);font-variant-numeric:tabular-nums}

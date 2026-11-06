@@ -1,0 +1,12 @@
+.env
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+project.private.config.json
+node_modules/
+data/*.duckdb
+data/*.parquet
+data/biz.db
+*.db-journal
+.DS_Store

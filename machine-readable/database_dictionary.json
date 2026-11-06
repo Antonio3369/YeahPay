@@ -1,0 +1,2458 @@
+{
+  "duckdb": {
+    "engine": "DuckDB + Parquet",
+    "file": "data/merchant.duckdb",
+    "external_transaction_file": "data/ods_transactions_all-*.parquet",
+    "objects": [
+      {
+        "name": "ads_merchant_status_snapshots",
+        "object_type": "BASE TABLE",
+        "row_count": 20,
+        "date_coverage": {
+          "column": "snapshot_date",
+          "minimum": "2026-08-08",
+          "maximum": "2026-08-08"
+        },
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "snapshot_date",
+            "type": "DATE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "merchant_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "status_tag",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "merchant_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "agent_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "binding_days",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "total_volume",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "last_trans_date",
+            "type": "DATE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "dim_merchant_list",
+        "object_type": "BASE TABLE",
+        "row_count": 19,
+        "date_coverage": null,
+        "columns": [
+          {
+            "position": 0,
+            "name": "reg_time",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "merchant_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "merchant_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "merchant_short_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "merchant_type",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "mcc_code",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "company_type",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "country_region",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "direct_org_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "direct_org_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "parent_org_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 11,
+            "name": "parent_org_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 12,
+            "name": "direct_agent_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 13,
+            "name": "direct_agent_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 14,
+            "name": "parent_agent_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 15,
+            "name": "parent_agent_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 16,
+            "name": "reg_source",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 17,
+            "name": "merchant_status",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 18,
+            "name": "risk_review_status",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 19,
+            "name": "review_pass_time",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 20,
+            "name": "ops_review_status",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 21,
+            "name": "bd_person",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 22,
+            "name": "sales_person",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 23,
+            "name": "sales_data_source",
+            "type": "DATE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "dim_sales_person",
+        "object_type": "BASE TABLE",
+        "row_count": 12,
+        "date_coverage": {
+          "column": "created_at",
+          "minimum": "2026-07-06T11:05:32",
+          "maximum": "2026-07-06T11:05:32"
+        },
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "sales_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "assigned_merchants",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "data_source_date",
+            "type": "DATE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "dws_daily_active_from_excel",
+        "object_type": "BASE TABLE",
+        "row_count": 160,
+        "date_coverage": {
+          "column": "snapshot_date",
+          "minimum": "2026-03-01",
+          "maximum": "2026-08-08"
+        },
+        "columns": [
+          {
+            "position": 0,
+            "name": "snapshot_date",
+            "type": "DATE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "active_merchant_count",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "source_file",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "dws_merchant_stats",
+        "object_type": "BASE TABLE",
+        "row_count": 20,
+        "date_coverage": {
+          "column": "snapshot_date",
+          "minimum": "2026-08-08",
+          "maximum": "2026-08-08"
+        },
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "snapshot_date",
+            "type": "DATE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "merchant_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "vol_recent_30d",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "vol_prev_30d",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "vol_hist_peak_30d",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "active_days_last_30d",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "agent_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "vol_61_90d",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "merchant_trans_30",
+        "object_type": "BASE TABLE",
+        "row_count": 20,
+        "date_coverage": null,
+        "columns": [
+          {
+            "position": 0,
+            "name": "地区",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "商户编号",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "商户名称",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "商户简称",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "一代编号",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "一代名称",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "业务员",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "商户状态",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "联系人姓名",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "联系手机号",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "联系地址",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 11,
+            "name": "联系邮件箱",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 12,
+            "name": "当前绑定的SN",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 13,
+            "name": "当前绑定码牌编号",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 14,
+            "name": "首次绑定时间",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 15,
+            "name": "最后交易成功时间",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 16,
+            "name": "笔数汇总",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 17,
+            "name": "金额汇总",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 18,
+            "name": "0704笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 19,
+            "name": "0704金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 20,
+            "name": "0705笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 21,
+            "name": "0705金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 22,
+            "name": "0706笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 23,
+            "name": "0706金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 24,
+            "name": "0707笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 25,
+            "name": "0707金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 26,
+            "name": "0708笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 27,
+            "name": "0708金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 28,
+            "name": "0709笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 29,
+            "name": "0709金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 30,
+            "name": "0710笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 31,
+            "name": "0710金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 32,
+            "name": "0711笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 33,
+            "name": "0711金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 34,
+            "name": "0712笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 35,
+            "name": "0712金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 36,
+            "name": "0713笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 37,
+            "name": "0713金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 38,
+            "name": "0714笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 39,
+            "name": "0714金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 40,
+            "name": "0715笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 41,
+            "name": "0715金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 42,
+            "name": "0716笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 43,
+            "name": "0716金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 44,
+            "name": "0717笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 45,
+            "name": "0717金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 46,
+            "name": "0718笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 47,
+            "name": "0718金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 48,
+            "name": "0719笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 49,
+            "name": "0719金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 50,
+            "name": "0720笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 51,
+            "name": "0720金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 52,
+            "name": "0721笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 53,
+            "name": "0721金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 54,
+            "name": "0722笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 55,
+            "name": "0722金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 56,
+            "name": "0723笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 57,
+            "name": "0723金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 58,
+            "name": "0724笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 59,
+            "name": "0724金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 60,
+            "name": "0725笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 61,
+            "name": "0725金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 62,
+            "name": "0726笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 63,
+            "name": "0726金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 64,
+            "name": "0727笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 65,
+            "name": "0727金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 66,
+            "name": "0728笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 67,
+            "name": "0728金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 68,
+            "name": "0729笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 69,
+            "name": "0729金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 70,
+            "name": "0730笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 71,
+            "name": "0730金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 72,
+            "name": "0731笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 73,
+            "name": "0731金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 74,
+            "name": "0801笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 75,
+            "name": "0801金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 76,
+            "name": "0802笔数",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 77,
+            "name": "0802金额",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "merchants",
+        "object_type": "BASE TABLE",
+        "row_count": 20,
+        "date_coverage": null,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "short_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "agent_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "agent_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "status",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "contact_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "contact_phone",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "contact_address",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "contact_email",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "bound_sn",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 11,
+            "name": "bound_qr_code",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 12,
+            "name": "first_bound_time",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 13,
+            "name": "last_trans_time",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 14,
+            "name": "latitude",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 15,
+            "name": "longitude",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 16,
+            "name": "location_status",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 17,
+            "name": "sales_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "ods_transactions_all",
+        "object_type": "VIEW",
+        "row_count": 10000,
+        "date_coverage": {
+          "column": "created_at",
+          "minimum": "2026-03-01T11:12:35",
+          "maximum": "2026-08-08T23:11:02"
+        },
+        "columns": [
+          {
+            "position": 0,
+            "name": "created_at",
+            "type": "TIMESTAMP_NS",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "order_no",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "merchant_id",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "merchant_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "merchant_short_name",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "agent_id",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "trans_channel",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "pay_wallet",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "amount",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "trans_type",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "trans_status",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 11,
+            "name": "error_code",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 12,
+            "name": "error_msg",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 13,
+            "name": "masked_card_no",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 14,
+            "name": "card_type",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 15,
+            "name": "card_location",
+            "type": "VARCHAR",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "transaction_amounts",
+        "object_type": "BASE TABLE",
+        "row_count": 1971,
+        "date_coverage": {
+          "column": "trans_date",
+          "minimum": "2026-03-01",
+          "maximum": "2026-08-08"
+        },
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "merchant_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "trans_date",
+            "type": "DATE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "amount",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "upload_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "transaction_counts",
+        "object_type": "BASE TABLE",
+        "row_count": 1971,
+        "date_coverage": {
+          "column": "trans_date",
+          "minimum": "2026-03-01",
+          "maximum": "2026-08-08"
+        },
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 1,
+            "name": "merchant_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "trans_date",
+            "type": "DATE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "count",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "upload_id",
+            "type": "BIGINT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      }
+    ]
+  },
+  "sqlite": {
+    "engine": "SQLite",
+    "file": "data/biz.db",
+    "objects": [
+      {
+        "name": "alert_followups",
+        "object_type": "BASE TABLE",
+        "row_count": 3,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "alert_id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "user_id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "content",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "followup_type",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "'note'",
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "alerts",
+        "object_type": "BASE TABLE",
+        "row_count": 22,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "merchant_id",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "merchant_name",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "alert_type",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "alert_level",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "'warning'",
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "title",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "description",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "metric_value",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "threshold_value",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "snapshot_date",
+            "type": "DATE",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "status",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "'unfollowed'",
+            "primary_key": false
+          },
+          {
+            "position": 11,
+            "name": "assigned_to",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 12,
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          },
+          {
+            "position": 13,
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "followup_records",
+        "object_type": "BASE TABLE",
+        "row_count": 9,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "source_type",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "source_id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "merchant_id",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "merchant_name",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "user_id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "touch_type",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "result",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "'following'",
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "note",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "''",
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "import_batches",
+        "object_type": "BASE TABLE",
+        "row_count": 0,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "filename",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "file_type",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "import_mode",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "'append'",
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "row_count",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": "0",
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "success_count",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": "0",
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "fail_count",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": "0",
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "status",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "'running'",
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "error_message",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "started_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "finished_at",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 11,
+            "name": "triggered_by",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "'auto'",
+            "primary_key": false
+          },
+          {
+            "position": 12,
+            "name": "operator_id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "merchant_pushes",
+        "object_type": "BASE TABLE",
+        "row_count": 4,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "merchant_id",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "merchant_name",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "push_note",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "pushed_by",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "pushed_to",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "status",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "'following'",
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "accepted_at",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "touch_type",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "resolved",
+            "type": "BOOLEAN",
+            "nullable": false,
+            "default": "0",
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "resolution_note",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 11,
+            "name": "resolved_by",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 12,
+            "name": "resolved_at",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 13,
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          },
+          {
+            "position": 14,
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "merchant_quotas",
+        "object_type": "BASE TABLE",
+        "row_count": 0,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "merchant_id",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "merchant_name",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "swipe_daily_limit",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "swipe_single_limit",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "swipe_monthly_limit",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "scan_daily_limit",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "scan_single_limit",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "scan_monthly_limit",
+            "type": "DOUBLE",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "updated_by",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "settings",
+        "object_type": "BASE TABLE",
+        "row_count": 8,
+        "columns": [
+          {
+            "position": 0,
+            "name": "key",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "value",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "description",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "updated_by",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "thresholds",
+        "object_type": "BASE TABLE",
+        "row_count": 17,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "threshold_key",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "display_name",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "description",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "value",
+            "type": "DOUBLE",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "unit",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "''",
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "color_warning",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "''",
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "color_critical",
+            "type": "TEXT",
+            "nullable": false,
+            "default": "''",
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "is_enabled",
+            "type": "BOOLEAN",
+            "nullable": false,
+            "default": "1",
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "updated_by",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "user_scope_bindings",
+        "object_type": "BASE TABLE",
+        "row_count": 2,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "user_id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "scope_type",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "scope_value",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "user_scopes",
+        "object_type": "BASE TABLE",
+        "row_count": 3,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "user_id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "scope_type",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "scope_value",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "object_type": "BASE TABLE",
+        "row_count": 3,
+        "columns": [
+          {
+            "position": 0,
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": true
+          },
+          {
+            "position": 1,
+            "name": "username",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 2,
+            "name": "password_hash",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 3,
+            "name": "display_name",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 4,
+            "name": "role",
+            "type": "TEXT",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 5,
+            "name": "supervisor_id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 6,
+            "name": "email",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 7,
+            "name": "phone",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 8,
+            "name": "is_active",
+            "type": "BOOLEAN",
+            "nullable": false,
+            "default": "1",
+            "primary_key": false
+          },
+          {
+            "position": 9,
+            "name": "must_change_pwd",
+            "type": "BOOLEAN",
+            "nullable": false,
+            "default": "0",
+            "primary_key": false
+          },
+          {
+            "position": 10,
+            "name": "last_login_at",
+            "type": "TIMESTAMP",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+          },
+          {
+            "position": 11,
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          },
+          {
+            "position": 12,
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "CURRENT_TIMESTAMP",
+            "primary_key": false
+          }
+        ]
+      }
+    ],
+    "settings_snapshot": {
+      "data_refresh_date": "2026-08-08",
+      "demo_snapshot": "2026-08-08",
+      "system_name": "立得香港商户交易后台",
+      "system_name_en": "HK Orblead Merchant Admin",
+      "theme_error_color": "#ff4d4f",
+      "theme_primary_color": "#1677ff",
+      "theme_success_color": "#52c41a",
+      "theme_warning_color": "#faad14"
+    }
+  }
+}

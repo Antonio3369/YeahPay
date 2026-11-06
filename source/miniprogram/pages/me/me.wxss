@@ -1,0 +1,12 @@
+.me-header{display:flex;align-items:center;padding:40rpx 0;margin-bottom:32rpx}
+.me-avt{width:100rpx;height:100rpx;border-radius:50%;background:rgba(102,119,223,.15);border:2rpx solid rgba(102,119,223,.3);display:flex;align-items:center;justify-content:center;font-size:44rpx;color:var(--ac);font-weight:700;margin-right:28rpx}
+.me-role{font-size:32rpx;font-weight:600;color:var(--text)}
+.me-sub{font-size:22rpx;color:var(--t3);margin-top:6rpx}
+.me-menu{background:var(--card);border-radius:var(--r);overflow:hidden}
+.me-item{display:flex;align-items:center;padding:32rpx 28rpx;border-bottom:2rpx solid var(--line)}
+.me-item:last-child{border-bottom:none}
+.me-item:active{background:var(--card2)}
+.me-icon{font-size:36rpx;margin-right:24rpx}
+.me-text{flex:1;font-size:28rpx;color:var(--text)}
+.me-arrow{font-size:36rpx;color:var(--t3)}
+.me-footer{text-align:center;padding:60rpx 0;font-size:26rpx;color:var(--t3)}

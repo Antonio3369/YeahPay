@@ -1,0 +1,15 @@
+<view class="page-container thresholds-page">
+  <view class="threshold-intro">
+    <view class="intro-kicker">ALERT POLICY</view>
+    <view class="intro-title">預警規則配置</view>
+    <view class="intro-desc">沉默商戶會即時按新規則計算；交易下降閾值儲存後會自動重新檢查預警。</view>
+  </view>
+  <view class="threshold-list" wx:if="{{thresholds.length}}">
+    <view class="threshold-card" wx:for="{{thresholds}}" wx:key="threshold_key">
+      <view class="threshold-copy"><view class="threshold-name">{{item.display_name}}</view><view class="threshold-desc">{{item.description}}</view></view>
+      <view class="threshold-edit"><input class="threshold-input" type="digit" value="{{item.draft}}" data-index="{{index}}" bindinput="onValueInput" /><text class="threshold-unit">{{item.unit}}</text><button class="threshold-save" data-index="{{index}}" bindtap="saveThreshold">{{savingKey === item.threshold_key ? '…' : '儲存'}}</button></view>
+    </view>
+  </view>
+  <view class="empty-state" wx:else>{{loading ? '正在讀取配置…' : '暫無閾值配置'}}</view>
+  <button class="regenerate-btn" bindtap="regenerateAlerts" loading="{{regenerating}}" disabled="{{regenerating}}">{{regenerating ? '正在重新檢查…' : '按最新閾值重新生成預警'}}</button>
+</view>

@@ -1,0 +1,48 @@
+<!--沉默商户页-->
+<view class="page-container">
+  <view class="silent-stats">
+    <view class="silent-stat" bindtap="showDefinition" data-title="沉默總數定義" data-definition="綁定滿14天，且符合沉睡或高危條件的商戶總數。">
+      <text class="ss-num">{{summary.total || 0}}</text><text class="ss-label">沉默總數</text><text class="ss-definition">符合沉默規則的全部商戶</text><text class="ss-info">i</text>
+    </view>
+    <view class="silent-stat silent-stat-sleep" bindtap="showDefinition" data-title="沉睡定義" data-definition="綁定{{thresholds.silent_days}}至{{thresholds.silent_max_days}}天，歷史累計交易額低於${{thresholds.silent_amount}}的商戶。">
+      <text class="ss-num">{{summary.sleeping || 0}}</text><text class="ss-label">沉睡</text><text class="ss-definition">綁定{{thresholds.silent_days}}–{{thresholds.silent_max_days}}天 · 累計&lt;${{thresholds.silent_amount}}</text><text class="ss-info">i</text>
+    </view>
+    <view class="silent-stat silent-stat-risk" bindtap="showDefinition" data-title="高危定義" data-definition="綁定超過{{thresholds.risky_days}}天，歷史累計交易額低於${{thresholds.risky_amount}}，且近{{thresholds.risky_lookback_days}}天沒有正金額交易的商戶。">
+      <text class="ss-num">{{summary.risky || 0}}</text><text class="ss-label">高危</text><text class="ss-definition">綁定&gt;{{thresholds.risky_days}}天 · 近{{thresholds.risky_lookback_days}}天無交易</text><text class="ss-info">i</text>
+    </view>
+  </view>
+
+  <view class="silent-search-bar">
+    <input class="silent-search-input" placeholder="搜尋商戶名稱或ID（全量）" placeholder-class="input-placeholder" value="{{searchText}}" bindinput="onSearch" confirm-type="search" />
+    <text class="silent-search-total">共 {{total}} 家</text>
+  </view>
+
+  <view class="silent-list-caption">商戶綁定時間、風險類型與近30天交易</view>
+
+  <view class="simple-table silent-table" wx:if="{{list.length > 0}}">
+    <view class="st-row st-header">
+      <text class="st-cell st-cell-wide silent-name">商戶</text>
+      <text class="st-cell silent-days">綁定</text>
+      <text class="st-cell silent-type">類型</text>
+      <text class="st-cell silent-amount">近30天</text>
+    </view>
+    <view class="st-row silent-row" wx:for="{{list}}" wx:key="merchant_id" bindtap="goMerchantDetail" data-id="{{item.merchant_id}}">
+      <view class="st-cell st-cell-wide silent-name">
+        <text class="silent-merchant-name">{{item.merchant_name}}</text>
+        <text class="silent-merchant-id">#{{item.merchant_id}}</text>
+      </view>
+      <text class="st-cell silent-days">{{item.binding_days_fmt}}</text>
+      <view class="st-cell silent-type {{item.status_class}}">
+        <text class="silent-type-label">{{item.merchant_type_label}}</text>
+        <text class="silent-status" wx:if="{{item.status_label}}">{{item.status_label}}</text>
+      </view>
+      <text class="st-cell silent-amount">{{item.amount_fmt}}</text>
+    </view>
+  </view>
+
+  <view class="loading-state" wx:if="{{loading}}">載入中...</view>
+  <view class="empty-state" wx:if="{{!loading && list.length === 0}}">暫無沉默商戶數據</view>
+
+  <view class="list-footer" wx:if="{{loadingMore}}">正在載入更多...</view>
+  <view class="list-footer list-footer-muted" wx:if="{{list.length > 0 && !hasMore}}">已加載全部沉默商戶</view>
+</view>

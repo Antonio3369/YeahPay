@@ -1,0 +1,157 @@
+/**
+ * 工作台样式
+ */
+
+/* 视角切换 */
+.scope-bar {
+  margin-bottom: 24rpx;
+}
+
+.scope-picker {
+  display: flex;
+  align-items: center;
+  background: var(--card);
+  border-radius: var(--rs);
+  padding: 20rpx 28rpx;
+  border: 2rpx solid var(--line);
+}
+.scope-fixed{display:flex;align-items:center;gap:12rpx;background:var(--card);border:2rpx solid var(--line);border-radius:var(--r);padding:22rpx 26rpx;margin-bottom:24rpx;color:var(--t2);font-size:24rpx}.scope-fixed-icon{color:var(--ac);font-size:20rpx}
+
+.scope-current{flex:1;display:flex;flex-direction:column;gap:4rpx}
+.scope-eyebrow{font-size:18rpx;color:var(--t3);letter-spacing:1rpx}
+
+.scope-icon {
+  font-size: 28rpx;
+  margin-right: 16rpx;
+}
+
+.scope-label {
+  flex: 1;
+  font-size: 26rpx;
+  color: var(--text);
+}
+
+.scope-arrow {
+  font-size: 20rpx;
+  color: var(--t3);
+}
+
+.scope-mask{position:fixed;z-index:10000;inset:0;background:rgba(32,42,59,.72);display:flex;align-items:flex-end}
+.scope-sheet{width:100%;height:76vh;min-height:760rpx;max-height:82vh;background:var(--card);border-radius:28rpx 28rpx 0 0;padding:28rpx 24rpx env(safe-area-inset-bottom);box-sizing:border-box;overflow:hidden;box-shadow:0 -12rpx 36rpx rgba(32,42,59,.16)}
+.scope-sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20rpx}
+.scope-sheet-title{font-size:30rpx;font-weight:700;color:var(--text)}
+.scope-sheet-close{font-size:44rpx;line-height:44rpx;color:var(--t2);padding:0 8rpx}
+.scope-tabs{display:flex;gap:8rpx;padding:6rpx;background:var(--bg);border-radius:16rpx;margin-bottom:18rpx}
+.scope-tab{flex:1;text-align:center;padding:16rpx 4rpx;border-radius:12rpx;color:var(--t3);font-size:23rpx}
+.scope-tab text{font-size:18rpx;color:var(--t3)}
+.scope-tab.active{background:var(--ac);color:#FFFFFF;font-weight:700}
+.scope-tab.active text{color:#FFFFFF}
+.scope-search{height:68rpx;padding:0 22rpx;margin-bottom:14rpx;background:var(--bg);border:2rpx solid var(--line);border-radius:var(--rs);color:var(--text);font-size:23rpx}
+.scope-options{height:52vh;min-height:420rpx;max-height:52vh;overflow-y:scroll;background:var(--card)}
+.scope-option{display:flex;align-items:center;justify-content:space-between;padding:20rpx 16rpx;border-bottom:2rpx solid var(--line);border-radius:14rpx}
+.scope-option.selected{background:rgba(102,119,223,.09)}
+.scope-option-name{display:block;color:var(--text);font-size:25rpx}
+.scope-option-desc{display:block;color:var(--t3);font-size:18rpx;margin-top:6rpx}
+.scope-check{color:var(--ac);font-size:30rpx;font-weight:700}
+.scope-no-result{text-align:center;color:var(--t3);font-size:22rpx;padding:60rpx 0}
+
+/* KPI 卡片行 */
+.kpi-row {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.kpi-card {
+  flex: 1;
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 28rpx 24rpx;
+  border: 2rpx solid var(--line);
+}
+
+.kpi-card-ac {
+  border-color: var(--line);
+}
+
+.kpi-card-wn {
+  border-color: var(--line);
+}
+
+.kpi-card-dg {
+  border-color: var(--line);
+}
+
+.kpi-num {
+  font-size: 40rpx;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2rpx;
+  color: var(--ac);
+}
+
+.kpi-num-merchant {
+  font-size: 34rpx;
+  letter-spacing: 1rpx;
+  white-space: nowrap;
+}
+
+.kpi-num-pair {
+  font-size: 30rpx;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+/* 失败比例与金额对比卡保持同一字号，避免百分号卡片显得偏小或偏大。 */
+.kpi-num-fail {
+  font-size: 30rpx;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.kpi-card-ac .kpi-num,
+.kpi-card-wn .kpi-num,
+.kpi-card-dg .kpi-num { color: var(--ac); }
+
+.kpi-label {
+  font-size: 20rpx;
+  color: var(--t3);
+  margin-top: 8rpx;
+  letter-spacing: 2rpx;
+  text-transform: uppercase;
+}
+
+.kpi-sub {
+  font-size: 22rpx;
+  margin-top: 8rpx;
+  font-weight: 500;
+}
+
+.kpi-active-rate {
+  color: var(--t2);
+}
+
+/* 图表区域 */
+.chart-section {
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 28rpx 20rpx 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.chart-section ec-canvas {
+  width: 100%;
+  height: 400rpx;
+}
+
+.chart-canvas {
+  width: 100%;
+  height: 400rpx;
+  display: block;
+}
+
+.chart-canvas ec-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}

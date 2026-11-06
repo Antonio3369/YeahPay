@@ -1,0 +1,221 @@
+/**
+ * 登录页样式
+ */
+.login-page {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 40rpx;
+}
+
+/* Logo */
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80rpx;
+}
+
+.logo-icon {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: var(--ac);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 2rpx;
+  margin-bottom: 24rpx;
+}
+
+.logo-title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 2rpx;
+}
+
+.logo-sub {
+  font-size: 22rpx;
+  color: var(--t3);
+  margin-top: 8rpx;
+  letter-spacing: 4rpx;
+}
+
+/* 卡片 */
+.login-card,
+.roles-card {
+  width: 100%;
+  max-width: 600rpx;
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 48rpx 40rpx;
+  border: 2rpx solid var(--line);
+}
+
+.login-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 40rpx;
+  text-align: center;
+}
+
+/* 输入框 */
+.input-group {
+  margin-bottom: 28rpx;
+}
+
+.input-label {
+  display: block;
+  font-size: 22rpx;
+  color: var(--t3);
+  margin-bottom: 12rpx;
+  letter-spacing: 2rpx;
+  text-transform: uppercase;
+}
+
+.input-field {
+  width: 100%;
+  box-sizing: border-box;
+  height: 88rpx;
+  background: var(--card2);
+  border-radius: var(--rs);
+  padding: 0 28rpx;
+  font-size: 28rpx;
+  color: var(--text);
+  border: 2rpx solid transparent;
+  transition: border-color 0.15s;
+}
+
+.input-field:focus {
+  border-color: var(--ac);
+}
+
+.input-placeholder {
+  color: var(--t3);
+}
+
+/* 错误提示 */
+.login-error {
+  font-size: 24rpx;
+  color: var(--dg);
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+/* 登录按钮 */
+.login-btn {
+  width: 100%;
+  height: 96rpx;
+  background: var(--ac);
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: 700;
+  border-radius: var(--rs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 2rpx;
+  border: none;
+  margin-top: 12rpx;
+}
+
+.login-btn::after {
+  border: none;
+}
+
+.login-btn[disabled] {
+  opacity: 0.6;
+}
+
+.login-hint {
+  font-size: 20rpx;
+  color: var(--t3);
+  text-align: center;
+  margin-top: 28rpx;
+}
+
+/* 角色选择 */
+.role-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 20rpx;
+  margin-bottom: 16rpx;
+  background: var(--card2);
+  border-radius: var(--r);
+  border: 2rpx solid transparent;
+  transition: border-color 0.15s;
+}
+
+.role-item:active {
+  border-color: var(--ac);
+}
+
+.role-avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  font-weight: 700;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.role-avatar-admin {
+  background: rgba(102, 119, 223, 0.12);
+  color: var(--ac);
+  border: 2rpx solid rgba(102, 119, 223, 0.24);
+}
+
+.role-avatar-supervisor {
+  background: rgba(197, 146, 69, 0.12);
+  color: var(--wn);
+  border: 2rpx solid rgba(197, 146, 69, 0.24);
+}
+
+.role-avatar-sales {
+  background: rgba(72, 181, 142, 0.12);
+  color: var(--sc);
+  border: 2rpx solid rgba(72, 181, 142, 0.24);
+}
+
+.role-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.role-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.role-desc {
+  font-size: 22rpx;
+  color: var(--t3);
+  margin-top: 6rpx;
+}
+
+.role-arrow {
+  font-size: 40rpx;
+  color: var(--t3);
+  margin-left: 16rpx;
+}
+
+.role-back {
+  font-size: 24rpx;
+  color: var(--t3);
+  text-align: center;
+  padding: 20rpx 0;
+  margin-top: 16rpx;
+}

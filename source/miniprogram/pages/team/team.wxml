@@ -1,0 +1,52 @@
+<!--飞虎队页面-->
+<view class="page-container">
+
+  <view class="access-locked" wx:if="{{accessDenied}}">
+    <view class="access-locked-icon">⌛</view>
+    <text class="access-locked-title">飛虎隊暫未向銷售開放</text>
+    <text class="access-locked-desc">當前賬號可以查看自己負責的商戶、預警和數據分析，銷售團隊排行功能後續開放。</text>
+  </view>
+
+  <block wx:if="{{!accessDenied}}">
+    <!-- 销售业绩入口 -->
+    <view class="perf-entry" bindtap="goSalesPerformance">
+      <text class="perf-entry-icon">📈</text>
+      <text class="perf-entry-text">銷售業績 · 新增排名與歷史數據</text>
+      <text class="perf-entry-arrow">›</text>
+    </view>
+
+    <!-- 排行表格 -->
+    <view class="team-table" wx:if="{{teamList.length > 0}}">
+    <view class="team-row team-header">
+      <text class="col-rank">#</text>
+      <text class="col-name">銷售</text>
+      <text class="col-num">商戶</text>
+      <text class="col-num">活躍</text>
+      <text class="col-num col-amount">上月</text>
+      <text class="col-num col-amount">本月</text>
+      <text class="col-num">環比</text>
+      <text class="col-num">預警</text>
+    </view>
+
+    <view
+      class="team-row"
+      wx:for="{{teamList}}"
+      wx:key="sales_name"
+      bindtap="goSalesDetail"
+      data-name="{{item.sales_name}}"
+    >
+      <text class="col-rank rank-num">{{index < 9 ? '0' + (index + 1) : index + 1}}</text>
+      <text class="col-name">{{item.sales_name}}</text>
+      <text class="col-num">{{item.merchant_count}}</text>
+      <text class="col-num">{{item.active_merchants}}</text>
+      <text class="col-num col-amount">{{item.last_amount_fmt}}</text>
+      <text class="col-num col-amount">{{item.this_amount_fmt}}</text>
+      <text class="col-num {{item.mom_raw >= 0 ? 'mom-up' : 'mom-down'}}">{{item.mom_fmt}}</text>
+      <text class="col-num {{item.alert_warn ? 'alert-warn' : ''}}">{{item.unfollowed_alerts}}</text>
+    </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{!loading && teamList.length === 0}}">暫無數據</view>
+  </block>
+
+</view>

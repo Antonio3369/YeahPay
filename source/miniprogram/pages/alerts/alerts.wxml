@@ -1,0 +1,132 @@
+<!--预警管理页-->
+<view class="page-container">
+
+  <!-- 狀態切換 -->
+  <view class="alert-tabs">
+    <view class="alert-tab {{activeTab === 'unfollowed' ? 'active' : ''}}" bindtap="switchTab" data-tab="unfollowed">待跟進</view>
+    <view class="alert-tab {{activeTab === 'following' ? 'active' : ''}}" bindtap="switchTab" data-tab="following">
+      跟進中<text class="tab-badge" wx:if="{{pushBadgeCount > 0}}">{{pushBadgeLabel}}</text>
+    </view>
+    <view class="alert-tab {{activeTab === 'resolved' ? 'active' : ''}}" bindtap="switchTab" data-tab="resolved">已解決</view>
+  </view>
+  <view class="alert-result-count">目前列表共有 {{total}} 個商戶</view>
+
+  <view class="alert-filter-panel">
+    <view class="alert-filter-hint">請先選擇一種或多種預警類型，再查看符合條件的商戶</view>
+    <input class="alert-search" value="{{searchKeyword}}" placeholder="搜尋已選類型的商戶名稱或ID" confirm-type="search" bindinput="onKeywordInput" bindconfirm="onKeywordConfirm" />
+    <scroll-view class="alert-tag-scroll" scroll-x="true" show-scrollbar="false">
+      <view class="alert-tag-row">
+        <view class="alert-tag {{item.selected ? 'selected' : ''}}" wx:for="{{tagOptions}}" wx:key="key" data-index="{{index}}" bindtap="toggleTag">{{item.label}}</view>
+        <view class="alert-tag clear" bindtap="clearAlertFilters">清除</view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 被推送但尚未接收的商户，固定显示在页面最前面 -->
+  <block wx:if="{{pushedInbox.length > 0}}">
+    <view class="push-inbox">
+      <view class="push-inbox-title"><text>收到的商戶推送</text><text class="push-inbox-count">{{pushedInbox.length}} 條待接收</text></view>
+      <view class="push-inbox-item" wx:for="{{pushedInbox}}" wx:key="id">
+        <view class="push-item-main">
+          <text class="push-item-name entity-link" bindtap="goMerchantDetail" data-id="{{item.merchant_id}}">{{item.merchant_name}}</text>
+          <text class="push-item-meta">{{item.sender_name}} 推送 · {{item.created_fmt}}</text>
+          <text class="push-item-note" wx:if="{{item.push_note}}">{{item.push_note}}</text>
+        </view>
+        <view class="push-item-action">
+          <button class="btn btn-primary btn-sm" bindtap="startPush" data-id="{{item.id}}">開始跟進</button>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 预警列表 -->
+  <block wx:if="{{hasTagFilter && alerts.length > 0}}">
+    <view class="alert-card" wx:for="{{alerts}}" wx:key="id" bindtap="goMerchantDetail" data-id="{{item.merchant_id}}">
+      <!-- 商户名 + badge -->
+      <view class="alert-header">
+        <text class="alert-merchant entity-link">{{item.merchant_name}}</text>
+        <text class="badge badge-{{item.status_class}}">{{item.status_label}}</text>
+      </view>
+
+      <!-- 描述 -->
+      <view class="alert-tags" wx:if="{{item.tag_labels && item.tag_labels.length}}">
+        <text class="alert-rule-tag" wx:for="{{item.tag_labels}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="alert-desc">{{item.description || item.title}}</view>
+
+      <!-- 指标 + 时间 -->
+      <view class="alert-footer">
+        <text class="alert-type">{{item.tag_label_text}} · {{item.metric_fmt}}</text>
+        <text class="alert-time">{{item.created_fmt}}</text>
+      </view>
+
+      <!-- 操作按钮（仅待跟进状态） -->
+      <view class="alert-actions" wx:if="{{item.status === 'unfollowed'}}">
+        <button class="btn btn-outline btn-sm" catchtap="doFollowup" data-id="{{item.id}}">開始跟進</button>
+        <button class="btn btn-primary btn-sm" catchtap="doResolve" data-id="{{item.id}}">標記解決</button>
+      </view>
+      <view class="alert-actions" wx:if="{{item.status === 'resolved'}}">
+        <button class="btn btn-outline btn-sm" catchtap="goReview" data-kind="alert" data-id="{{item.id}}">查看復盤</button>
+      </view>
+    </view>
+  </block>
+
+  <view class="alert-select-hint" wx:if="{{!hasTagFilter}}">
+    <view class="alert-select-hint-title">請先選擇預警類型</view>
+    <view class="alert-select-hint-text">可單選或多選；多選時只顯示同時符合全部類型的商戶。</view>
+  </view>
+
+  <!-- 人工推送在跟進中/已解決列表中显示，双方账号均可见 -->
+  <block wx:if="{{(activeTab === 'following' || activeTab === 'resolved') && pushes.length > 0}}">
+    <view class="push-list-title">人工推送 · {{activeTab === 'resolved' ? '已解決' : '跟進中'}}</view>
+    <view class="alert-card push-alert-card" wx:for="{{pushes}}" wx:key="id" bindtap="goMerchantDetail" data-id="{{item.merchant_id}}">
+      <view class="alert-header">
+        <text class="alert-merchant entity-link">{{item.merchant_name}}</text>
+        <text class="badge badge-{{item.status_class}}">{{item.status_label}}</text>
+      </view>
+      <view class="alert-tags" wx:if="{{item.alert_tag_labels && item.alert_tag_labels.length}}">
+        <text class="alert-rule-tag" wx:for="{{item.alert_tag_labels}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="alert-desc">{{item.source_label}} · 接收人：{{item.receiver_name}}</view>
+      <view class="alert-desc" wx:if="{{item.push_note}}">推送備註：{{item.push_note}}</view>
+      <view class="alert-desc" wx:if="{{item.resolution_note}}">處理備註：{{item.resolution_note}}</view>
+      <view class="alert-footer"><text class="alert-type">{{item.touch_label || '待觸達'}}</text><text class="alert-time">{{item.created_fmt}}</text></view>
+      <view class="alert-actions" wx:if="{{item.status === 'following' && item.is_recipient && !item.needs_acceptance}}">
+        <button class="btn btn-primary btn-sm" catchtap="doPushResolve" data-id="{{item.id}}">標記解決</button>
+      </view>
+      <view class="alert-actions" wx:if="{{item.status === 'resolved'}}">
+        <button class="btn btn-outline btn-sm" catchtap="goReview" data-kind="push" data-id="{{item.id}}">查看復盤</button>
+      </view>
+    </view>
+  </block>
+
+  <view class="list-footer" wx:if="{{loadingMore}}">正在載入更多...</view>
+  <view class="list-footer list-footer-muted" wx:if="{{alerts.length > 0 && !hasMore}}">已加載全部預警</view>
+
+  <view class="alert-error" wx:if="{{!loading && loadError}}">
+    <text class="alert-error-title">{{loadError}}</text>
+    <button class="btn btn-outline btn-sm alert-retry" bindtap="loadAlerts">重新加載</button>
+  </view>
+
+  <view class="alert-empty" wx:if="{{!loading && !loadError && emptyVisible}}">
+    <view class="alert-empty-icon">✓</view>
+    <text class="alert-empty-title">目前沒有需要處理的預警</text>
+    <text class="alert-empty-hint">系統已檢查最新交易數據，當前沒有未解決預警。</text>
+  </view>
+
+  <!-- 触达确认弹窗 -->
+  <view class="resolve-mask" wx:if="{{resolveVisible}}">
+    <view class="resolve-dialog" catchtap="noop">
+      <view class="resolve-title">快速復盤</view>
+      <view class="resolve-label">本次觸達</view>
+      <picker mode="selector" range="{{resolveTouchOptions}}" value="{{resolveTouchIndex}}" bindchange="onResolveTouchChange">
+        <view class="resolve-picker">{{resolveTouchOptions[resolveTouchIndex]}} ›</view>
+      </picker>
+      <view class="resolve-switch-row"><text>是否已解決</text><switch checked="{{resolveSolved}}" color="#22D3EE" bindchange="onResolveSolvedChange" /></view>
+      <view class="resolve-label">一句話備註（可選）</view>
+      <textarea class="resolve-textarea" placeholder="例如：已聯絡商戶，預計明天恢復交易" value="{{resolveNote}}" maxlength="500" bindinput="onResolveNoteInput" />
+      <view class="resolve-actions"><button class="btn btn-outline" bindtap="closeResolveModal">取消</button><button class="btn btn-primary" bindtap="confirmResolve">儲存復盤</button></view>
+    </view>
+  </view>
+
+</view>

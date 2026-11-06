@@ -1,0 +1,24 @@
+<!--境外卡 TOP 10-->
+<view class="page-container">
+  <view class="rank-search">
+    <input class="rank-search-input" placeholder="搜尋商戶名稱或ID（全量）" placeholder-class="input-placeholder" value="{{searchText}}" bindinput="onSearch" confirm-type="search" />
+    <text class="rank-search-total">匹配 Top 10</text>
+  </view>
+  <view class="simple-table" wx:if="{{list.length > 0}}">
+    <view class="st-row st-header">
+      <text class="st-cell" style="width:60rpx">#</text>
+      <text class="st-cell st-cell-wide">商戶</text>
+      <text class="st-cell">境外額</text>
+      <text class="st-cell">佔比</text>
+    </view>
+    <view class="st-row" wx:for="{{list}}" wx:key="merchant_id" bindtap="goMerchantDetail" data-id="{{item.merchant_id}}">
+      <text class="st-cell" style="width:60rpx;color:var(--ac);font-weight:700">{{index < 9 ? '0' + (index + 1) : index + 1}}</text>
+      <text class="st-cell st-cell-wide entity-link">{{item.merchant_name}}</text>
+      <text class="st-cell">{{item.amount_fmt}}</text>
+      <text class="st-cell">{{item.pct_of_month}}%</text>
+    </view>
+  </view>
+  <view class="loading-state" wx:if="{{loading}}">載入中...</view>
+  <view class="empty-state" wx:if="{{!loading && loadError}}">{{loadError}}</view>
+  <view class="empty-state" wx:if="{{!loading && !loadError && list.length === 0}}">暫無境外卡數據</view>
+</view>

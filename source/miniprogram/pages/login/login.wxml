@@ -1,0 +1,49 @@
+<!--登录页-->
+<view class="login-page">
+  <!-- Logo 区域 -->
+  <view class="logo-area">
+    <view class="logo-icon">YP</view>
+    <view class="logo-title">YeahPay</view>
+    <view class="logo-sub">香港支付數據看板</view>
+  </view>
+
+  <!-- 登录表单 -->
+  <view class="login-card" wx:if="{{!showRoles}}">
+    <view class="login-title">登錄</view>
+
+    <view class="input-group">
+      <text class="input-label">賬號</text>
+      <input
+        class="input-field"
+        placeholder="請輸入賬號"
+        placeholder-class="input-placeholder"
+        value="{{username}}"
+        bindinput="onUsernameInput"
+        confirm-type="next"
+      />
+    </view>
+
+    <view class="input-group">
+      <text class="input-label">密碼</text>
+      <input
+        class="input-field"
+        placeholder="請輸入密碼"
+        placeholder-class="input-placeholder"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+        password="{{true}}"
+        confirm-type="done"
+        bindconfirm="doLogin"
+      />
+    </view>
+
+    <view class="login-error" wx:if="{{errorMsg}}">{{errorMsg}}</view>
+
+    <button class="login-btn" bindtap="doLogin" loading="{{loading}}" disabled="{{loading}}">
+      {{loading ? '登錄中...' : 'SIGN IN'}}
+    </button>
+
+    <view class="login-hint">B 聯調賬號：admin · 請使用聯調密碼登入</view>
+  </view>
+
+</view>

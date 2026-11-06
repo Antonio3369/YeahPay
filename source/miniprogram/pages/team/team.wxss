@@ -1,0 +1,116 @@
+ .access-locked{margin:120rpx 20rpx 0;padding:64rpx 36rpx;background:var(--card);border:2rpx solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;text-align:center}
+.access-locked-icon{width:96rpx;height:96rpx;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(197,146,69,.12);color:var(--wn);font-size:46rpx;margin-bottom:28rpx}
+.access-locked-title{font-size:30rpx;font-weight:600;color:var(--text);margin-bottom:16rpx}
+.access-locked-desc{font-size:23rpx;line-height:1.7;color:var(--t3)}
+
+/* 销售业绩入口 */
+.perf-entry {
+  display: flex;
+  align-items: center;
+  background: var(--lav, #EEF0FF);
+  border: 2rpx solid rgba(102, 119, 223, 0.18);
+  border-radius: var(--r);
+  padding: 24rpx 28rpx;
+  margin-bottom: 28rpx;
+}
+
+.perf-entry-icon {
+  font-size: 36rpx;
+  margin-right: 16rpx;
+}
+
+.perf-entry-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: var(--ac);
+}
+
+.perf-entry-arrow {
+  font-size: 36rpx;
+  color: var(--t3);
+}
+
+/* 排行表格 */
+.team-table {
+  background: var(--card);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+
+.team-row {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 16rpx;
+  border-bottom: 2rpx solid var(--line);
+}
+
+.team-row:last-child {
+  border-bottom: none;
+}
+
+.team-header {
+  background: var(--card2);
+}
+
+.team-header text {
+  font-size: 18rpx;
+  color: var(--t3);
+  letter-spacing: 2rpx;
+  text-transform: uppercase;
+}
+
+.team-row:not(.team-header) {
+  transition: background 0.1s;
+}
+
+.team-row:not(.team-header):active {
+  background: var(--card2);
+}
+
+.col-rank {
+  width: 60rpx;
+  font-size: 22rpx;
+  color: var(--ac);
+  font-weight: 700;
+  text-align: center;
+}
+
+.col-name {
+  flex: 1;
+  font-size: 24rpx;
+  color: var(--text);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 120rpx;
+}
+
+.team-row:not(.team-header) .col-name::after {
+  content: '›';
+  color: var(--ac);
+  margin-left: 8rpx;
+}
+
+.col-num {
+  width: 100rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--t2);
+  font-variant-numeric: tabular-nums;
+}
+
+.col-amount {
+  width: 92rpx;
+  font-size: 21rpx;
+  white-space: nowrap;
+}
+
+.rank-num {
+  color: var(--ac);
+}
+
+.alert-warn {
+  color: var(--dg) !important;
+  font-weight: 700;
+}

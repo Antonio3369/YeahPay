@@ -1,0 +1,57 @@
+<!--我的页面 - 入口列表-->
+<view class="page-container">
+  <view class="me-header">
+    <view class="me-avt">{{roleAvatar}}</view>
+    <view class="me-info">
+      <view class="me-role">{{roleLabel}}</view>
+      <view class="me-sub">YeahPay 數據看板</view>
+    </view>
+  </view>
+
+  <view class="me-menu">
+    <view class="me-item admin-menu-item" wx:if="{{isAdmin}}" bindtap="goPage" data-page="account-management">
+      <text class="me-icon">⚙</text>
+      <text class="me-text">管理員後台 · 賬號管理</text>
+      <text class="me-arrow">›</text>
+    </view>
+    <view class="me-item admin-menu-item" wx:if="{{isAdmin}}" bindtap="goPage" data-page="thresholds">
+      <text class="me-icon">⌘</text>
+      <text class="me-text">管理員後台 · 預警閾值</text>
+      <text class="me-arrow">›</text>
+    </view>
+    <view class="me-item" bindtap="goPage" data-page="reviews">
+      <text class="me-icon">↗</text>
+      <text class="me-text">預警復盤報告</text>
+      <text class="me-arrow">›</text>
+    </view>
+    <view class="me-item" bindtap="goPage" data-page="fails">
+      <text class="me-icon">❌</text>
+      <text class="me-text">交易失敗</text>
+      <text class="me-arrow">›</text>
+    </view>
+    <view class="me-item" bindtap="goPage" data-page="silent">
+      <text class="me-icon">😴</text>
+      <text class="me-text">沉默商戶</text>
+      <text class="me-arrow">›</text>
+    </view>
+    <view class="me-item" bindtap="goPage" data-page="overseas">
+      <text class="me-icon">🌏</text>
+      <text class="me-text">境外卡 TOP 10</text>
+      <text class="me-arrow">›</text>
+    </view>
+    <view class="me-item" bindtap="goPage" data-page="mastercard">
+      <text class="me-icon">💳</text>
+      <text class="me-text">萬事達卡排行</text>
+      <text class="me-arrow">›</text>
+    </view>
+    <view class="me-item" bindtap="goPage" data-page="data-update">
+      <text class="me-icon">↻</text>
+      <text class="me-text">數據更新確認</text>
+      <text class="me-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="me-footer" bindtap="doLogout">
+    <text>退出登錄</text>
+  </view>
+</view>

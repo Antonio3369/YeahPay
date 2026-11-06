@@ -1,0 +1,101 @@
+/* 搜索栏 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  background: var(--card);
+  border-radius: var(--rs);
+  padding: 0 28rpx;
+  font-size: 26rpx;
+  color: var(--text);
+  border: 2rpx solid var(--line);
+}
+
+.search-input:focus {
+  border-color: var(--ac);
+}
+
+.search-total {
+  font-size: 22rpx;
+  color: var(--t3);
+  white-space: nowrap;
+}
+
+/* 商户卡片 */
+.merchant-card {
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  border: 2rpx solid transparent;
+  transition: border-color 0.15s;
+}
+
+.merchant-card:active {
+  border-color: var(--ac);
+}
+
+.mc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12rpx;
+}
+
+.mc-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-id {
+  font-size: 20rpx;
+  color: var(--t3);
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+
+.mc-meta {
+  font-size: 22rpx;
+  color: var(--t3);
+  margin-bottom: 20rpx;
+}
+
+.mc-divider {
+  margin: 0 12rpx;
+}
+
+/* 交易数据 */
+.mc-data {
+  display: flex;
+  gap: 16rpx;
+}
+
+.mc-data-item {
+  flex: 1;
+}
+
+.mc-data-label {
+  display: block;
+  font-size: 18rpx;
+  color: var(--t3);
+  margin-bottom: 4rpx;
+  letter-spacing: 2rpx;
+  text-transform: uppercase;
+}
+
+.mc-data-value {
+  font-size: 26rpx;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}

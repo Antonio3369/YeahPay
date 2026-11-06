@@ -1,0 +1,46 @@
+<!--銷售詳情頁-->
+<view class="page-container">
+  <view class="empty-state" wx:if="{{!loading && loadError}}">{{loadError}}</view>
+
+  <block wx:if="{{info}}">
+    <view class="card sales-hero">
+      <view class="sales-avatar">{{avatar}}</view>
+      <view class="sales-identity">
+        <text class="sales-name">{{name}}</text>
+        <text class="sales-caption">銷售業績 · 名下商戶與交易概況</text>
+      </view>
+    </view>
+
+    <view class="summary-grid">
+      <view class="summary-card">
+        <text class="summary-value">{{info.merchant_count || 0}} / {{info.previous_merchant_count || 0}}</text>
+        <text class="summary-label">名下商戶 / 上月名下商戶</text>
+        <text class="summary-compare {{info.merchant_compare.className}}">{{info.merchant_compare.text}}</text>
+      </view>
+      <view class="summary-card">
+        <text class="summary-value">{{info.active_count || 0}} / {{info.previous_active_count || 0}}</text>
+        <text class="summary-label">本月活躍 / 上月活躍</text>
+        <text class="summary-compare {{info.active_compare.className}}">{{info.active_compare.text}}</text>
+      </view>
+      <view class="summary-card summary-card-wide"><text class="summary-value">{{info.this_month_vol_fmt}}</text><text class="summary-label">本月交易額</text></view>
+    </view>
+
+    <view class="section-title"><text>錢包類型分佈</text><text>近3個月</text></view>
+    <view class="card chart-card" wx:if="{{walletReady}}"><view class="sales-chart"><ec-canvas id="salesWalletChart" canvas-id="salesWalletChart" ec="{{ecWallet}}" /></view></view>
+
+    <view class="section-title"><text>交易狀態分佈</text><text>近3個月</text></view>
+    <view class="card chart-card" wx:if="{{statusReady}}"><view class="sales-chart"><ec-canvas id="salesStatusChart" canvas-id="salesStatusChart" ec="{{ecStatus}}" /></view></view>
+
+    <view class="section-title"><text>名下商戶</text><text>{{merchants.length}} 家</text></view>
+    <view class="card merchant-list" wx:if="{{merchants.length > 0}}">
+      <view class="merchant-row" wx:for="{{merchants}}" wx:key="id" bindtap="goMerchantDetail" data-id="{{item.id}}">
+        <text class="merchant-rank">{{item.rank < 10 ? '0' + item.rank : item.rank}}</text>
+        <view class="merchant-identity"><text class="merchant-name">{{item.short_name || item.name || item.id}}</text><text class="merchant-id">{{item.id}}</text></view>
+        <text class="merchant-amount">{{item.amount_fmt}}</text>
+      </view>
+    </view>
+    <view class="empty-state" wx:if="{{merchants.length === 0}}">暫無名下商戶數據</view>
+    <view class="list-footer" wx:if="{{merchantLoadingMore}}">正在載入更多...</view>
+    <view class="list-footer list-footer-muted" wx:if="{{merchants.length > 0 && !merchantHasMore}}">已加載全部名下商戶</view>
+  </block>
+</view>

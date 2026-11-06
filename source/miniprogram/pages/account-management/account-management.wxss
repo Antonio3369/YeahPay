@@ -1,0 +1,46 @@
+.account-page{padding-bottom:60rpx}
+.account-header{height:88rpx;display:flex;align-items:center;border-bottom:2rpx solid var(--line);margin:0 -32rpx;padding:0 28rpx}
+.back-btn{font-size:64rpx;line-height:50rpx;color:var(--text);width:72rpx}
+.page-title{flex:1;text-align:center;font-size:34rpx;font-weight:700;color:var(--text)}
+.header-spacer{width:72rpx}
+.account-intro{padding:36rpx 0 28rpx}
+.intro-kicker{font-size:20rpx;letter-spacing:4rpx;color:var(--ac);font-weight:700}
+.intro-title{font-size:42rpx;color:var(--text);font-weight:700;margin-top:10rpx}
+.intro-desc{font-size:23rpx;color:var(--t3);margin-top:12rpx;line-height:1.6}
+.account-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20rpx}
+.toolbar-title{font-size:30rpx;color:var(--text);font-weight:700}
+.toolbar-sub{font-size:22rpx;color:var(--t3);margin-top:6rpx}
+.primary-btn,.secondary-btn{display:flex;align-items:center;justify-content:center;box-sizing:border-box;margin:0;border:0;border-radius:var(--rs);height:76rpx;line-height:1;padding:0 26rpx;font-size:24rpx;font-weight:700;vertical-align:middle}
+.primary-btn{background:var(--ac);color:#07111f}
+.secondary-btn{background:var(--card2);color:var(--text);border:2rpx solid var(--line)}
+.primary-btn::after,.secondary-btn::after,.danger-btn::after{border:0}
+.user-list{display:flex;flex-direction:column;gap:16rpx}
+.user-card{display:flex;align-items:center;background:var(--card);border:2rpx solid var(--line);border-radius:var(--r);padding:24rpx 20rpx;min-height:118rpx}
+.user-card:active{background:var(--card2)}
+.user-avatar{width:70rpx;height:70rpx;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30rpx;font-weight:700;margin-right:20rpx;flex-shrink:0}
+.role-admin{color:var(--ac);background:rgba(102,119,223,.12)}
+.role-supervisor{color:var(--wn);background:rgba(197,146,69,.12)}
+.role-sales{color:var(--sc);background:rgba(72,181,142,.12)}
+.user-main{flex:1;min-width:0}
+.user-name-row{display:flex;align-items:center;gap:12rpx}
+.user-name{font-size:28rpx;color:var(--text);font-weight:700;max-width:300rpx;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-role{font-size:19rpx;color:var(--t3);border:2rpx solid var(--line);padding:4rpx 10rpx;border-radius:999rpx}
+.user-account,.user-scope{font-size:21rpx;color:var(--t3);margin-top:6rpx;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-scope{color:var(--ac)}
+.user-state{font-size:20rpx;margin-left:12rpx;white-space:nowrap}.is-active{color:var(--sc)}.is-disabled{color:var(--dg)}
+.empty-state{text-align:center;color:var(--t3);padding:100rpx 0}
+.editor-mask{position:fixed;z-index:20;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:flex-end}
+.editor-sheet{width:100%;background:var(--bg);border-radius:28rpx 28rpx 0 0;padding:34rpx 32rpx 48rpx;max-height:88vh;overflow-y:auto;box-sizing:border-box}
+.editor-title{font-size:36rpx;color:var(--text);font-weight:700}.editor-hint{font-size:21rpx;color:var(--t3);margin:8rpx 0 26rpx}
+.field-row{display:flex;align-items:center;min-height:82rpx;border-bottom:2rpx solid var(--line)}
+.field-label{width:220rpx;color:var(--t3);font-size:23rpx;flex-shrink:0}.field-input,.field-picker{flex:1;color:var(--text);font-size:25rpx;text-align:right}.field-input{height:78rpx;line-height:78rpx}.field-picker{padding:25rpx 0}.picker-arrow{color:var(--ac);margin-left:8rpx}
+.scope-all{padding:24rpx 0;color:var(--ac);font-size:23rpx;border-bottom:2rpx solid var(--line)}
+.scope-help{font-size:21rpx;color:var(--t3);line-height:1.55;padding:18rpx 0 8rpx}
+.sales-select-box{padding:18rpx 0 10rpx;border-bottom:2rpx solid var(--line)}
+.multi-title{font-size:23rpx;color:var(--t3);margin-bottom:12rpx}
+.sales-option{display:flex;align-items:center;min-height:70rpx;color:var(--text);font-size:24rpx;border-top:2rpx solid rgba(161,171,187,.08)}
+.sales-option checkbox{margin-right:12rpx}
+.selected-summary{font-size:21rpx;color:var(--ac);padding-top:10rpx}
+.account-toolbar>.primary-btn{min-width:190rpx;flex-shrink:0}
+.editor-actions{display:flex;gap:18rpx;margin-top:30rpx}.editor-actions button{flex:1}.save-btn{width:auto}
+.danger-btn{background:transparent;color:var(--dg)}

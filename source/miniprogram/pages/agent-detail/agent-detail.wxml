@@ -1,0 +1,34 @@
+<!--代理商详情页-->
+<view class="page-container">
+  <view class="loading-state" wx:if="{{loading}}">載入中...</view>
+  <view class="empty-state" wx:if="{{!loading && loadError}}">{{loadError}}</view>
+
+  <block wx:if="{{info}}">
+    <view class="card agent-hero">
+      <text class="agent-name">{{info.agent_name}}</text>
+      <text class="agent-id">代理商 ID · {{info.agent_id}}</text>
+    </view>
+
+    <view class="summary-grid">
+      <view class="summary-card"><text class="summary-value">{{info.merchant_count || 0}}</text><text class="summary-label">名下商戶</text></view>
+      <view class="summary-card"><text class="summary-value">{{info.active_count || 0}}</text><text class="summary-label">本月活躍</text></view>
+      <view class="summary-card summary-card-wide"><text class="summary-value">{{info.this_month_volume_fmt}}</text><text class="summary-label">本月交易額</text></view>
+    </view>
+
+    <view class="section-title"><text>近12個月新增趨勢</text><text>代理商</text></view>
+    <view class="card simple-table" wx:if="{{trend.length > 0}}">
+      <view class="st-row st-header"><text class="st-cell st-cell-wide">月份</text><text class="st-cell">新增商戶</text><text class="st-cell">新增交易額</text></view>
+      <view class="st-row" wx:for="{{trend}}" wx:key="month"><text class="st-cell st-cell-wide">{{item.month_label}}</text><text class="st-cell">{{item.new_merchants}}</text><text class="st-cell entity-amount">{{item.volume_fmt}}</text></view>
+    </view>
+
+    <view class="section-title"><text>錢包類型分佈</text><text>近3個月</text></view>
+    <view class="card simple-table" wx:if="{{wallet.length > 0}}">
+      <view class="st-row" wx:for="{{wallet}}" wx:key="name"><text class="st-cell st-cell-wide">{{item.name || '未標記'}}</text><text class="st-cell">{{item.cnt}}</text><text class="st-cell entity-amount">{{item.volume_fmt}}</text></view>
+    </view>
+
+    <view class="section-title"><text>交易狀態分佈</text><text>近3個月</text></view>
+    <view class="card simple-table" wx:if="{{status.length > 0}}">
+      <view class="st-row" wx:for="{{status}}" wx:key="name"><text class="st-cell st-cell-wide">{{item.name || '未標記'}}</text><text class="st-cell">{{item.cnt}}</text><text class="st-cell entity-amount">{{item.volume_fmt}}</text></view>
+    </view>
+  </block>
+</view>

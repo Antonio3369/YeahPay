@@ -1,0 +1,73 @@
+<!--商户详情页-->
+<view class="page-container" wx:if="{{info}}">
+  <view class="card">
+    <view class="detail-header">
+      <text class="detail-name">{{info.short_name || info.name || info.agent_name || '-'}} · {{info.status || '-'}}</text>
+      <view class="detail-meta">
+        <text>銷售：</text><text class="detail-link" bindtap="goSalesDetail">{{merchantSummary.salesName}}</text>
+        <text> · 代理商：</text>
+        <text wx:if="{{role === 'admin' && merchantSummary.agentId}}" class="detail-link" bindtap="goAgentDetail">{{merchantSummary.agentName}}</text>
+        <text wx:else>{{merchantSummary.agentName}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="summary-grid">
+    <view class="summary-card"><text class="summary-value">{{merchantSummary.recentAmount}}</text><text class="summary-label">近30日交易額</text></view>
+    <view class="summary-card"><text class="summary-value">{{merchantSummary.recentCount}}</text><text class="summary-label">近30日交易筆數</text></view>
+    <view class="summary-card"><text class="summary-value">{{merchantSummary.mtdAmount}}</text><text class="summary-label">本月交易額</text></view>
+    <view class="summary-card"><text class="summary-value">{{merchantSummary.mtdCount}}</text><text class="summary-label">本月交易筆數</text></view>
+  </view>
+
+  <view class="card detail-meta-card">
+    <view class="detail-row"><text class="dr-label">首次綁定</text><text class="dr-value dr-muted">{{merchantSummary.firstBound}}</text></view>
+    <view class="detail-row"><text class="dr-label">最後交易</text><text class="dr-value dr-muted">{{merchantSummary.lastTrans}}</text></view>
+  </view>
+
+  <view class="card push-card">
+    <view class="push-title">推送商戶跟進</view>
+    <view class="push-desc">可將此商戶交給其他賬號跟進；推送雙方在解決前都會看到跟進狀態。</view>
+    <block wx:if="{{pushRecipients.length > 0}}">
+      <picker mode="selector" range="{{pushRecipients}}" range-key="label" value="{{pushRecipientIndex < 0 ? 0 : pushRecipientIndex}}" bindchange="onPushRecipientChange">
+        <view class="push-picker {{pushRecipientIndex < 0 ? 'push-placeholder' : ''}}">
+          {{pushRecipientIndex < 0 ? '選擇接收賬號' : pushRecipients[pushRecipientIndex].label}}
+        </view>
+      </picker>
+      <input class="push-note" placeholder="備註（可選）" value="{{pushNote}}" bindinput="onPushNoteInput" />
+      <button class="push-submit" bindtap="pushMerchant" loading="{{pushing}}" disabled="{{pushing}}">{{pushing ? '推送中…' : '推送商戶'}}</button>
+    </block>
+    <block wx:else>
+      <view class="push-empty">目前沒有其他可接收推送的有效賬號</view>
+      <button class="push-account-btn" wx:if="{{role === 'admin'}}" bindtap="goAccountManagement">前往建立賬號</button>
+    </block>
+  </view>
+
+  <view class="section-title"><text>錢包類型分佈</text></view>
+  <view class="card" wx:if="{{breakdown.wallet.length > 0}}">
+    <view class="detail-chart"><ec-canvas id="merchantWalletChart" canvas-id="merchantWalletChart" ec="{{ecWallet}}" /></view>
+    <view class="detail-row" wx:for="{{breakdown.wallet}}" wx:key="name">
+      <text class="dr-label">{{item.name || '未標記'}}</text>
+      <text class="dr-value">{{item.volume_fmt}}</text>
+    </view>
+  </view>
+
+  <view class="section-title"><text>交易狀態分佈</text></view>
+  <view class="card" wx:if="{{breakdown.status.length > 0}}">
+    <view class="detail-chart"><ec-canvas id="merchantStatusChart" canvas-id="merchantStatusChart" ec="{{ecStatus}}" /></view>
+    <view class="detail-row" wx:for="{{breakdown.status}}" wx:key="name">
+      <text class="dr-label">{{item.name || '未標記'}}</text>
+      <text class="dr-value">{{item.volume_fmt}}</text>
+    </view>
+  </view>
+
+  <view class="section-title"><text>近30日交易趨勢</text></view>
+  <view class="card" wx:if="{{dailyStats.length > 0}}">
+    <view class="detail-chart detail-chart-tall"><ec-canvas id="merchantTrendChart" canvas-id="merchantTrendChart" ec="{{ecTrend}}" /></view>
+    <view class="detail-row" wx:for="{{dailyStats}}" wx:key="period" wx:if="{{index < 5}}">
+      <text class="dr-label">{{item.period_label}}</text>
+      <text class="dr-value">{{item.amount_fmt}}</text>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{info && breakdown.wallet.length === 0 && breakdown.status.length === 0 && dailyStats.length === 0}}">暫無可視化交易數據</view>
+</view>

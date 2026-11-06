@@ -1,0 +1,40 @@
+<view class="page-container reviews-page">
+  <view class="reviews-hero">
+    <view class="reviews-kicker">FOLLOW-UP REVIEW</view>
+    <view class="reviews-title">預警復盤</view>
+    <view class="reviews-subtitle">把每一次觸達，沉澱成下一次行動的依據</view>
+    <button class="export-btn" bindtap="exportReport" loading="{{exporting}}">{{exporting ? '正在生成…' : '匯出 Excel'}}</button>
+  </view>
+  <view class="review-stats">
+    <view class="review-stat"><text class="review-stat-value">{{summary.cases}}</text><text class="review-stat-label">復盤商戶</text></view>
+    <view class="review-stat review-stat-success"><text class="review-stat-value">{{summary.resolved}}</text><text class="review-stat-label">已解決</text></view>
+    <view class="review-stat review-stat-warn"><text class="review-stat-value">{{summary.following}}</text><text class="review-stat-label">跟進中</text></view>
+    <view class="review-stat"><text class="review-stat-value">{{summary.avg_touch_count}}</text><text class="review-stat-label">平均次数</text></view>
+  </view>
+  <view class="review-search-row">
+    <input class="review-search" value="{{q}}" placeholder="搜尋商戶名稱或ID" confirm-type="search" bindinput="onSearchInput" bindconfirm="onSearchConfirm" />
+    <text class="search-clear" wx:if="{{q}}" bindtap="clearSearch">清除</text>
+  </view>
+  <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false"><view class="filter-row">
+    <view class="filter-chip {{status === '' ? 'selected' : ''}}" data-status="" bindtap="switchStatus">全部</view>
+    <view class="filter-chip {{status === 'resolved' ? 'selected' : ''}}" data-status="resolved" bindtap="switchStatus">已解決</view>
+    <view class="filter-chip {{status === 'following' ? 'selected' : ''}}" data-status="following" bindtap="switchStatus">跟進中</view>
+    <view class="filter-chip {{touchType === 'offline' ? 'selected' : ''}}" data-touch="offline" bindtap="switchTouch">線下觸達</view>
+    <view class="filter-chip {{touchType === 'online' ? 'selected' : ''}}" data-touch="online" bindtap="switchTouch">線上觸達</view>
+  </view></scroll-view>
+  <view class="date-row">
+    <picker mode="date" value="{{startDate}}" bindchange="onStartDateChange"><view class="date-picker">{{startDate || '開始日期'}}⌄</view></picker><text class="date-dash">—</text>
+    <picker mode="date" value="{{endDate}}" bindchange="onEndDateChange"><view class="date-picker">{{endDate || '結束日期'}}⌄</view></picker><text class="date-clear" wx:if="{{startDate || endDate}}" bindtap="clearDates">重置</text>
+  </view>
+  <view class="review-section-head"><text>復盤清單</text><text class="review-count">共 {{summary.cases}} 條</text></view>
+  <view class="review-list" wx:if="{{items.length}}">
+    <view class="review-card" wx:for="{{items}}" wx:key="case_key" bindtap="openDetail" data-kind="{{item.source_type}}" data-id="{{item.source_id}}">
+      <view class="review-card-top"><text class="review-merchant">{{item.merchant_name}}</text><text class="review-status review-status-{{item.current_status}}">{{item.current_status === 'resolved' ? '已解決' : '跟進中'}}</text></view>
+      <view class="review-source">{{item.source_title}} · 最近由 {{item.latest_user_name || '—'}} 跟進</view>
+      <view class="review-card-meta"><text>{{item.touch_count}} 次跟進</text><text>{{item.latest_touch_type === 'offline' ? '線下觸達' : (item.latest_touch_type === 'online' ? '線上觸達' : '未填寫方式')}}</text><text>{{item.last_followup_at}}</text></view>
+      <view class="review-note" wx:if="{{item.latest_note}}">{{item.latest_note}}</view><view class="review-card-arrow">查看復盤 ›</view>
+    </view>
+  </view>
+  <view class="review-empty" wx:elif="{{!loading}}"><text class="review-empty-mark">—</text><text>還沒有符合條件的復盤記錄</text><text class="review-empty-sub">完成一次跟進後，這裡會自動留下記錄</text></view>
+  <view class="list-footer" wx:if="{{loadingMore}}">正在載入更多…</view><view class="list-footer list-footer-muted" wx:if="{{items.length && !hasMore}}">已載入全部復盤</view>
+</view>

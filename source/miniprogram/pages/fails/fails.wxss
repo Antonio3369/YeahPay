@@ -1,0 +1,8 @@
+.simple-table{background:var(--card);border-radius:var(--r);overflow:hidden;margin-bottom:28rpx}
+.st-row{display:flex;padding:18rpx 12rpx;border-bottom:2rpx solid var(--line)}
+.st-row:last-child{border-bottom:none}
+.st-header{background:var(--card2)}
+.st-header text{font-size:18rpx;color:var(--t3);text-transform:uppercase;letter-spacing:2rpx}
+.st-cell{width:120rpx;text-align:center;font-size:22rpx;color:var(--t2);font-variant-numeric:tabular-nums}
+.st-cell-wide{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);font-size:22rpx}
+.error-code{color:var(--dg) !important;font-weight:500}

@@ -1,0 +1,63 @@
+<view class="page-container account-page">
+  <view class="account-intro">
+    <view class="intro-kicker">ADMIN CONTROL</view>
+    <view class="intro-title">賬號與數據權限</view>
+    <view class="intro-desc">角色決定功能權限，數據範圍決定賬號能看到哪些商戶。</view>
+  </view>
+
+  <view class="account-toolbar">
+    <view>
+      <view class="toolbar-title">系統賬號</view>
+      <view class="toolbar-sub">共 {{users.length}} 個賬號</view>
+    </view>
+    <button class="primary-btn" bindtap="openCreate">＋ 新建賬號</button>
+  </view>
+
+  <view class="user-list" wx:if="{{users.length}}">
+    <view class="user-card" wx:for="{{users}}" wx:key="id" data-user="{{item}}" bindtap="openEdit">
+      <view class="user-avatar role-{{item.role}}">{{item.role === 'admin' ? 'A' : item.role === 'supervisor' ? 'G' : 'S'}}</view>
+      <view class="user-main">
+        <view class="user-name-row"><text class="user-name">{{item.display_name}}</text><text class="user-role">{{item.roleLabel}}</text></view>
+        <view class="user-account">{{item.username}}</view>
+        <view class="user-scope">數據範圍：{{item.scopeLabel}}</view>
+      </view>
+      <view class="user-state {{item.is_active ? 'is-active' : 'is-disabled'}}">{{item.statusLabel}}</view>
+    </view>
+  </view>
+  <view class="empty-state" wx:else>{{loading ? '正在讀取賬號…' : '暫無賬號'}}</view>
+
+  <view class="editor-mask" wx:if="{{editorOpen}}" catchtap="closeEditor">
+    <view class="editor-sheet" catchtap="stopEvent">
+      <view class="editor-title">{{editingId ? '編輯賬號' : '新建賬號'}}</view>
+      <view class="editor-hint">登錄後將自動進入綁定的角色和數據範圍</view>
+
+      <view class="field-row" wx:if="{{!editingId}}"><text class="field-label">登錄賬號</text><input class="field-input" value="{{form.username}}" data-field="username" bindinput="onInput" placeholder="請輸入登錄賬號" /></view>
+      <view class="field-row"><text class="field-label">顯示名稱</text><input class="field-input" value="{{form.display_name}}" data-field="display_name" bindinput="onInput" placeholder="例如：WING123" /></view>
+      <view class="field-row"><text class="field-label">登錄密碼{{editingId ? '（填寫則重置）' : ''}}</text><input class="field-input" password value="{{form.password}}" data-field="password" bindinput="onInput" placeholder="請輸入密碼" /></view>
+      <view class="field-row"><text class="field-label">角色</text><picker class="field-picker" range="{{roleLabels}}" value="{{form.roleIndex}}" bindchange="onRoleChange"><view>{{roleLabels[form.roleIndex]}} <text class="picker-arrow">⌄</text></view></picker></view>
+      <block wx:if="{{form.role === 'supervisor'}}">
+        <view class="field-row"><text class="field-label">绑定代理商</text><picker class="field-picker" range="{{form.agentLabels}}" value="{{form.agentIndex}}" bindchange="onAgentChange"><view>{{form.agentLabels[form.agentIndex] || '不绑定代理商'}} <text class="picker-arrow">⌄</text></view></picker></view>
+        <view class="scope-help">代理商可選；下面可以單選或多選銷售，數據範圍按兩者合併計算。</view>
+        <view class="sales-select-box">
+          <view class="multi-title">關聯銷售（可多選）</view>
+          <checkbox-group bindchange="onSalesChange">
+            <label class="sales-option" wx:for="{{salesOptions}}" wx:key="sales_name">
+              <checkbox value="{{item.sales_name}}" checked="{{item.selected}}" color="#22d3ee" />
+              <text>{{item.sales_name}}</text>
+            </label>
+          </checkbox-group>
+          <view class="selected-summary">已選擇 {{form.salesNames.length}} 名銷售</view>
+        </view>
+      </block>
+      <block wx:elif="{{form.role === 'sales'}}">
+        <view class="field-row"><text class="field-label">固定銷售範圍</text><picker class="field-picker" range="{{form.scopeLabels}}" value="{{form.scopeIndex}}" bindchange="onScopeChange"><view>{{form.scopeLabels[form.scopeIndex] || '請選擇'}} <text class="picker-arrow">⌄</text></view></picker></view>
+      </block>
+      <view class="scope-all" wx:else>固定數據範圍：全部機構</view>
+      <view class="field-row"><text class="field-label">郵箱（可選）</text><input class="field-input" value="{{form.email}}" data-field="email" bindinput="onInput" placeholder="可選" /></view>
+      <view class="field-row"><text class="field-label">電話（可選）</text><input class="field-input" value="{{form.phone}}" data-field="phone" bindinput="onInput" placeholder="可選" /></view>
+
+      <view class="editor-actions"><button class="secondary-btn" bindtap="closeEditor">取消</button><button class="primary-btn save-btn" bindtap="saveUser">儲存</button></view>
+      <button class="danger-btn" wx:if="{{editingId}}" data-user="{{editingUser}}" bindtap="toggleActive">{{editingUser.is_active ? '停用此賬號' : '重新啟用此賬號'}}</button>
+    </view>
+  </view>
+</view>
