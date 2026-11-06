@@ -43,7 +43,7 @@
       {{loading ? '登錄中...' : 'SIGN IN'}}
     </button>
 
-    <view class="login-hint">B 聯調賬號：admin · 請使用聯調密碼登入</view>
+    <view class="login-hint">本小程序不連接後端。任意非空賬號密碼可進入；賬號名 admin / supervisor / sales 對應角色。</view>
   </view>
 
 </view>

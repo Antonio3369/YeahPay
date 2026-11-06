@@ -1,5 +1,5 @@
 const { get } = require('../../utils/api');
-const { API_BASE_URL } = require('../../utils/config');
+const { API_BASE_URL, USE_REMOTE_API } = require('../../utils/config');
 const { getToken, getRole, getScope, buildScopeParam } = require('../../utils/auth');
 
 Page({
@@ -48,6 +48,10 @@ Page({
   },
   onReachBottom() { this.loadReviews(false); },
   exportReport() {
+    if (!USE_REMOTE_API) {
+      wx.showToast({ title: '小程序未接入 API，無法匯出', icon: 'none' });
+      return;
+    }
     if (this.data.exporting) return;
     this.setData({ exporting: true });
     wx.downloadFile({
