@@ -1,5 +1,17 @@
 # 数据文件说明
 
+## 小程序上传包（不接 API）
+
+微信小程序看板改为管理员在本机上传文件，不再请求 FastAPI。
+
+支持：
+
+- JSON：`{ "as_of": "YYYY-MM-DD", "merchants": [...], "transactions": [...] }`
+- CSV：带表头。交易列可用 `merchant_id` / `商户编号`、`created_at` / `交易时间`、`amount` / `金额`、`trans_status`；商户列可用 `id`、`name`、`agent_id`、`sales_name`。
+
+示例：`miniprogram-dataset.example.json`。把文件发到微信后，在小程序「上傳數據文件」里从聊天记录选择。DuckDB / Parquet 不能在小程序内解析。
+
+
 ## 分析运行包：两个文件缺一不可
 
 - `merchant.duckdb`：维表、汇总表，以及名为 `ods_transactions_all` 的只读视图。

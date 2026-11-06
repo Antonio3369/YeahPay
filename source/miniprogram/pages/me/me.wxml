@@ -44,9 +44,9 @@
       <text class="me-text">萬事達卡排行</text>
       <text class="me-arrow">›</text>
     </view>
-    <view class="me-item" bindtap="goPage" data-page="data-update">
+    <view class="me-item admin-menu-item" wx:if="{{isAdmin}}" bindtap="goPage" data-page="data-update">
       <text class="me-icon">↻</text>
-      <text class="me-text">數據更新確認</text>
+      <text class="me-text">管理員後台 · 上傳數據文件</text>
       <text class="me-arrow">›</text>
     </view>
   </view>
