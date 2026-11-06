@@ -10,7 +10,11 @@ import urllib.request
 
 
 def request(url: str, token: str | None = None):
-    headers = {"Accept": "application/json"}
+    # Cloudflare 会拦截 Python-urllib 默认 UA；B 线上域名需要显式 UA。
+    headers = {
+        "Accept": "application/json",
+        "User-Agent": "YeahPay-smoke/1.0",
+    }
     if token:
         headers["Authorization"] = f"Bearer {token}"
     with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=20) as response:

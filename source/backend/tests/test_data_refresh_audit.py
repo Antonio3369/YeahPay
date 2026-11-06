@@ -94,11 +94,20 @@ class DataRefreshAuditTest(unittest.TestCase):
     def test_scope_options_follow_new_database_without_hardcoded_entities(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             candidate_path = Path(temp_dir) / "candidate.duckdb"
+            sqlite_path = Path(temp_dir) / "biz.db"
             make_database(candidate_path, [
                 ("3", "新商户", "A2", "新代理", "正常", "SN3", ""),
             ], [("3", "新销售")])
+            db = sqlite3.connect(sqlite_path)
+            db.execute("CREATE TABLE settings(key TEXT PRIMARY KEY, value TEXT)")
+            db.execute(
+                "INSERT INTO settings(key, value) VALUES ('data_refresh_date', '2026-08-15')"
+            )
+            db.commit()
+            db.close()
             with patch("core.duckdb_client.settings.DUCKDB_PATH", str(candidate_path)), \
-                 patch("core.duckdb_client.settings.DUCKDB_RELEASE_GATE_ENABLED", False):
+                 patch("core.duckdb_client.settings.DUCKDB_RELEASE_GATE_ENABLED", False), \
+                 patch("core.sqlite_client.settings.SQLITE_PATH", str(sqlite_path)):
                 agents = list_agents(None)
                 sales = list_sales(None)
             self.assertEqual([row["agent_id"] for row in agents], ["A2"])
