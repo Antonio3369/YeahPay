@@ -3,7 +3,7 @@
     <view class="hero-mark">↻</view>
     <view class="hero-copy">
       <text class="hero-title">上傳數據文件</text>
-      <text class="hero-subtitle">不連接後端，管理員在本機選擇 JSON / CSV</text>
+      <text class="hero-subtitle">請用 Excel「另存為 CSV UTF-8」，不要只改副檔名</text>
     </view>
   </view>
 
@@ -36,8 +36,8 @@
       <view class="source-row" bindtap="pickTransactions">
         <view class="source-icon detail-icon">D</view>
         <view class="source-copy">
-          <text class="source-title">交易明細 JSON / CSV</text>
-          <text class="source-meta">{{detailFile || '點此從微信聊天記錄選擇'}}</text>
+          <text class="source-title">交易明細 CSV / JSON</text>
+          <text class="source-meta">{{detailFile || 'Excel 需另存為 CSV UTF-8 後再選'}}</text>
         </view>
         <text class="source-date">{{status.detailDate || '待上傳'}}</text>
       </view>
@@ -80,7 +80,7 @@
         <text>LOCAL</text>
       </view>
       <text class="publish-date">{{status.publishDate || '待確認'}}</text>
-      <text class="publish-hint">以文件中的 as_of 或最晚交易日為準。確認後只寫入本機，工作臺立即按此日期出數。請先把 json/csv 發到微信再選擇。</text>
+      <text class="publish-hint">Excel 不能改後綴當 CSV。用「檔案 → 另存為 → CSV UTF-8（逗號分隔）」。表頭需有商戶號/編號、交易時間、金額。確認後只寫入本機。</text>
       <button class="btn btn-primary publish-btn" loading="{{importing}}" disabled="{{!status.canPublish || importing}}" bindtap="confirmPublish">確認寫入本機數據</button>
     </view>
   </block>

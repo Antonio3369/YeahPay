@@ -14,10 +14,18 @@ function pad2(n) {
 }
 
 function ymd(value) {
-  const text = String(value || '').trim();
-  const match = text.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
-  if (!match) return '';
-  return match[1] + '-' + pad2(+match[2]) + '-' + pad2(+match[3]);
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return value.getFullYear() + '-' + pad2(value.getMonth() + 1) + '-' + pad2(value.getDate());
+  }
+  const text = String(value == null ? '' : value).trim();
+  const match = text.match(/(\d{4})[-/年.](\d{1,2})[-/月.](\d{1,2})/);
+  if (match) return match[1] + '-' + pad2(+match[2]) + '-' + pad2(+match[3]);
+  const serial = Number(text);
+  if (Number.isFinite(serial) && serial > 20000 && serial < 80000) {
+    const dt = new Date(Date.UTC(1899, 11, 30) + Math.round(serial) * 86400000);
+    return dt.getUTCFullYear() + '-' + pad2(dt.getUTCMonth() + 1) + '-' + pad2(dt.getUTCDate());
+  }
+  return '';
 }
 
 function addDays(dateStr, days) {
@@ -63,16 +71,28 @@ function num(value) {
 
 function pick(row, keys) {
   for (let i = 0; i < keys.length; i++) {
-    if (row[keys[i]] != null && row[keys[i]] !== '') return row[keys[i]];
+    const key = normalizeHeader(keys[i]);
+    if (row[key] != null && row[key] !== '') return row[key];
   }
   return '';
 }
 
 function normalizeHeader(name) {
-  return String(name || '').replace(/^\ufeff/, '').trim().toLowerCase();
+  return String(name || '')
+    .replace(/^\ufeff/, '')
+    .replace(/[\s　]+/g, '')
+    .replace(/[()（）\[\]【】]/g, '')
+    .toLowerCase();
 }
 
-function parseCsv(text) {
+const ID_KEYS = ['merchant_id', '商户编号', '商戶編號', '商户号', '商戶號', '商户id', 'merchantid', 'merchantno', 'mid', 'id'];
+const DATE_KEYS = ['created_at', 'trans_date', '交易时间', '交易時間', '完成时间', '完成時間', '支付时间', '支付時間', '订单时间', '訂單時間', 'date', '日期'];
+const AMT_KEYS = ['amount', '金额', '金額', '交易额', '交易額', '交易金额', '交易金額', '实收金额', '實收金額', '订单金额', '訂單金額'];
+const STATUS_KEYS = ['trans_status', '交易状态', '交易狀態', 'status', '状态', '狀態', '结果', '結果'];
+const NAME_KEYS = ['name', 'merchant_name', '商户名称', '商戶名稱', '商户名', 'short_name'];
+const TXN_HINT = /amount|金额|金額|created_at|交易时间|交易時間|交易金额|交易金額|trans_status|商户号|商戶號|商户编号/;
+
+function parseDelimited(text, delim) {
   const rows = [];
   let row = [];
   let cell = '';
@@ -87,7 +107,7 @@ function parseCsv(text) {
       } else cell += ch;
     } else if (ch === '"') {
       inQuotes = true;
-    } else if (ch === ',') {
+    } else if (ch === delim) {
       row.push(cell);
       cell = '';
     } else if (ch === '\n') {
@@ -103,49 +123,150 @@ function parseCsv(text) {
     row.push(cell);
     rows.push(row);
   }
-  if (!rows.length) return [];
-  const headers = rows[0].map(normalizeHeader);
-  return rows.slice(1).filter(r => r.some(v => String(v).trim() !== '')).map(r => {
+  return rows.filter(r => r.some(v => String(v).trim() !== ''));
+}
+
+function guessDelim(line) {
+  const comma = (line.match(/,/g) || []).length;
+  const tab = (line.match(/\t/g) || []).length;
+  const semi = (line.match(/;/g) || []).length;
+  if (tab >= comma && tab >= semi && tab > 0) return '\t';
+  if (semi > comma && semi > 0) return ';';
+  return ',';
+}
+
+function headerScore(cells) {
+  const joined = cells.map(normalizeHeader).join('|');
+  let score = 0;
+  ID_KEYS.concat(DATE_KEYS, AMT_KEYS, NAME_KEYS).forEach(k => {
+    if (joined.indexOf(normalizeHeader(k)) >= 0) score += 1;
+  });
+  return score;
+}
+
+function parseCsv(text) {
+  const rawLines = String(text || '').replace(/^\ufeff/, '').split(/\r?\n/).filter(l => l.trim());
+  if (!rawLines.length) return [];
+  const delim = guessDelim(rawLines[0]);
+  const table = parseDelimited(text, delim);
+  if (!table.length) return [];
+  let headerAt = 0;
+  for (let i = 0; i < Math.min(table.length, 20); i++) {
+    if (headerScore(table[i]) >= 2) { headerAt = i; break; }
+  }
+  const headers = table[headerAt].map(normalizeHeader);
+  return table.slice(headerAt + 1).map(r => {
     const obj = {};
-    headers.forEach((h, idx) => { obj[h] = r[idx] == null ? '' : String(r[idx]).trim(); });
+    headers.forEach((h, idx) => { if (h) obj[h] = r[idx] == null ? '' : String(r[idx]).trim(); });
     return obj;
   });
 }
 
 function asMerchant(row) {
-  const id = String(pick(row, ['id', 'merchant_id', '商户编号', '商戶編號', 'merchantid']) || '').trim();
+  const id = String(pick(row, ID_KEYS) || '').trim();
   if (!id) return null;
   return {
     id,
-    name: String(pick(row, ['name', 'merchant_name', '商户名称', '商戶名稱', 'short_name']) || id),
-    short_name: String(pick(row, ['short_name', 'merchant_short_name', '简称', '簡稱']) || pick(row, ['name', 'merchant_name']) || id),
-    agent_id: String(pick(row, ['agent_id', 'direct_agent_id', '代理商编号', '代理商編號']) || ''),
-    agent_name: String(pick(row, ['agent_name', 'direct_agent_name', '代理商', '代理商名称']) || ''),
-    sales_name: String(pick(row, ['sales_name', 'sales_person', '业务员', '業務員', 'bd_person']) || ''),
-    status: String(pick(row, ['status', 'merchant_status', '状态', '狀態']) || '正常'),
+    name: String(pick(row, NAME_KEYS) || id),
+    short_name: String(pick(row, ['short_name', '简称', '簡稱'].concat(NAME_KEYS)) || id),
+    agent_id: String(pick(row, ['agent_id', 'direct_agent_id', '代理商编号', '代理商編號', '代理商号']) || ''),
+    agent_name: String(pick(row, ['agent_name', 'direct_agent_name', '代理商', '代理商名称', '代理商名稱']) || ''),
+    sales_name: String(pick(row, ['sales_name', 'sales_person', '业务员', '業務員', 'bd_person', '销售', '銷售']) || ''),
+    status: String(pick(row, ['merchant_status', 'status', '状态', '狀態']) || '正常'),
     bound_sn: String(pick(row, ['bound_sn', 'sn']) || '1')
   };
 }
 
 function asTransaction(row) {
-  const merchantId = String(pick(row, ['merchant_id', '商户编号', '商戶編號', 'id']) || '').trim();
-  const created = ymd(pick(row, ['created_at', 'trans_date', '交易时间', '交易時間', 'date', '日期']));
+  const merchantId = String(pick(row, ID_KEYS) || '').trim();
+  const created = ymd(pick(row, DATE_KEYS));
   if (!merchantId || !created) return null;
   return {
     merchant_id: merchantId,
     created_at: created,
-    amount: num(pick(row, ['amount', '金额', '金額', '交易额', '交易額'])),
-    trans_status: String(pick(row, ['trans_status', 'status', '交易状态', '交易狀態']) || '交易成功'),
-    pay_wallet: String(pick(row, ['pay_wallet', 'wallet', '卡包', '钱包', '錢包']) || 'UNKNOWN'),
+    amount: num(pick(row, AMT_KEYS)),
+    trans_status: String(pick(row, STATUS_KEYS) || '交易成功'),
+    pay_wallet: String(pick(row, ['pay_wallet', 'wallet', '卡包', '钱包', '錢包', '支付方式']) || 'UNKNOWN'),
     card_brand: String(pick(row, ['card_brand', '卡组织', '卡組織', 'brand']) || ''),
-    country: String(pick(row, ['country', 'country_region', '国家', '國家', '地区']) || '')
+    country: String(pick(row, ['country', 'country_region', '国家', '國家', '地区', '地區']) || '')
   };
 }
 
 function looksLikeTransactions(rows) {
   if (!rows.length) return false;
-  const keys = Object.keys(rows[0]).join(' ');
-  return /amount|金额|金額|created_at|交易时间|交易時間|trans_status/.test(keys);
+  const keys = Object.keys(rows[0]).join('|');
+  return TXN_HINT.test(keys);
+}
+
+function utf16FromBytes(u8, little) {
+  let out = '';
+  for (let i = 0; i + 1 < u8.length; i += 2) {
+    const code = little ? (u8[i] | (u8[i + 1] << 8)) : ((u8[i] << 8) | u8[i + 1]);
+    if (code) out += String.fromCharCode(code);
+  }
+  return out;
+}
+
+function decodeBytes(buffer) {
+  const u8 = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+  if (u8.length >= 2 && u8[0] === 0x50 && u8[1] === 0x4b) {
+    throw new Error('這是 Excel 工作簿（.xlsx），不能把副檔名改成 .csv。請用 Excel：檔案 → 另存為 → 檔案格式選「CSV UTF-8（逗號分隔）(.csv)」，再上傳那個新檔。');
+  }
+  if (u8.length >= 4 && u8[0] === 0xd0 && u8[1] === 0xcf && u8[2] === 0x11 && u8[3] === 0xe0) {
+    throw new Error('這是舊版 Excel（.xls）。請用 Excel 另存為「CSV UTF-8（逗號分隔）」後再上傳。');
+  }
+  if (u8.length >= 2 && u8[0] === 0xff && u8[1] === 0xfe) return utf16FromBytes(u8.slice(2), true);
+  if (u8.length >= 2 && u8[0] === 0xfe && u8[1] === 0xff) return utf16FromBytes(u8.slice(2), false);
+  let utf8 = '';
+  try {
+    utf8 = typeof TextDecoder === 'function' ? new TextDecoder('utf-8').decode(u8) : String.fromCharCode.apply(null, Array.from(u8));
+  } catch (e) {
+    utf8 = '';
+  }
+  const bad = (utf8.match(/\uFFFD/g) || []).length;
+  if (bad > 5 || /[\x00-\x08]/.test(utf8.slice(0, 200))) {
+    try {
+      if (typeof TextDecoder === 'function') return new TextDecoder('gb18030').decode(u8);
+    } catch (e) { /* ignore */ }
+  }
+  return utf8;
+}
+
+function rowsFromText(text) {
+  const trimmed = String(text || '').replace(/^\ufeff/, '').trim();
+  if (!trimmed) throw new Error('文件是空的');
+  if (trimmed.charAt(0) === '{' || trimmed.charAt(0) === '[') {
+    try {
+      return parseObject(JSON.parse(trimmed));
+    } catch (e) {
+      throw new Error('JSON 無法解析：' + (e.message || '格式錯誤'));
+    }
+  }
+  const rows = parseCsv(trimmed);
+  if (!rows.length) throw new Error('CSV 沒有有效行');
+  const parsed = looksLikeTransactions(rows)
+    ? { merchants: [], transactions: rows.map(asTransaction).filter(Boolean) }
+    : { merchants: rows.map(asMerchant).filter(Boolean), transactions: [] };
+  if (!parsed.transactions.length && !parsed.merchants.length) {
+    const headers = Object.keys(rows[0] || {}).slice(0, 12).join('、') || '(空)';
+    throw new Error('未能識別列。讀到的表頭：' + headers + '。至少需要「商戶編號/商戶號」和「交易時間」，金額列名用「金額」或「交易金額」。請用 Excel 另存為 CSV UTF-8，不要只改副檔名。');
+  }
+  return parsed;
+}
+
+function parseText(text, fileName) {
+  const lower = String(fileName || '').toLowerCase();
+  if (lower.endsWith('.xlsx') || lower.endsWith('.xls')) {
+    throw new Error('請把 Excel 另存為 CSV UTF-8，不要直接上傳 xlsx，也不要只改副檔名。');
+  }
+  return rowsFromText(text);
+}
+
+function parseBuffer(buffer, fileName) {
+  const lower = String(fileName || '').toLowerCase();
+  const text = decodeBytes(buffer);
+  if (lower.endsWith('.json')) return rowsFromText(text);
+  return rowsFromText(text);
 }
 
 function parseObject(payload) {
@@ -163,30 +284,6 @@ function parseObject(payload) {
     merchants,
     transactions
   };
-}
-
-function parseText(text, fileName) {
-  const trimmed = String(text || '').replace(/^\ufeff/, '').trim();
-  if (!trimmed) throw new Error('文件是空的');
-  const lower = String(fileName || '').toLowerCase();
-  let parsed;
-  if (lower.endsWith('.json') || trimmed.charAt(0) === '{' || trimmed.charAt(0) === '[') {
-    try {
-      parsed = parseObject(JSON.parse(trimmed));
-    } catch (e) {
-      throw new Error('JSON 無法解析：' + (e.message || '格式錯誤'));
-    }
-  } else {
-    const rows = parseCsv(trimmed);
-    if (!rows.length) throw new Error('CSV 沒有有效行');
-    parsed = looksLikeTransactions(rows)
-      ? { merchants: [], transactions: rows.map(asTransaction).filter(Boolean) }
-      : { merchants: rows.map(asMerchant).filter(Boolean), transactions: [] };
-  }
-  if (!parsed.transactions.length && !parsed.merchants.length) {
-    throw new Error('未識別到商戶或交易字段。請使用 JSON（merchants/transactions）或帶表頭的 CSV。');
-  }
-  return parsed;
 }
 
 function inferMerchants(transactions, existing) {
@@ -822,6 +919,7 @@ function salesPerformanceHistory() {
 
 module.exports = {
   parseText,
+  parseBuffer,
   mergeCandidate,
   saveSync,
   loadSync,

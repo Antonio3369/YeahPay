@@ -95,7 +95,7 @@ Page({
     wx.chooseMessageFile({
       count: 1,
       type: 'file',
-      extension: ['json', 'csv', 'txt'],
+      extension: ['json', 'csv', 'txt', 'xlsx', 'xls'],
       success: (res) => {
         const file = (res.tempFiles || [])[0];
         if (!file) return;
@@ -112,10 +112,9 @@ Page({
     this.setData({ importing: true });
     wx.getFileSystemManager().readFile({
       filePath: file.path,
-      encoding: 'utf8',
       success: (res) => {
         try {
-          const parsed = dataset.parseText(res.data, file.name);
+          const parsed = dataset.parseBuffer(res.data, file.name);
           const next = dataset.mergeCandidate(this._candidate, parsed, kind);
           this._candidate = next;
           const name = file.name || '未命名';
